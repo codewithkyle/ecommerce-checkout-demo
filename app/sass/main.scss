@@ -134,6 +134,7 @@ body{
     max-width: 1196px;
     padding: 0 16px;
     margin-top: 160px;
+    overflow: hidden;
 
     .c-checkout_sections{
         width: 100%;
@@ -143,6 +144,82 @@ body{
         order: 1;
         display: inline-flex;
         flex-flow: column wrap;
+        overflow-y: auto;
+        scroll-behavior: smooth;
+
+        .c-checkout_section{
+            padding-top: 49px;
+            padding-bottom: 48px;
+
+            h1{
+                position: absolute;
+                top: 0;
+                left: 0;
+                font-size: 20px;
+                color: $font;
+                opacity: 0.87;
+                font-weight: 500;
+            }
+
+            .c-checkout_modal{
+                width: 100%;
+                border-radius: 0 0 8px 8px;
+                background-color: $white;
+                box-shadow: 0 2px 4px rgba($cool-black, 0.1);
+                border-top: 8px solid $primary;
+                padding: 16px;
+
+                &#account-information{
+                    display: flex;
+                    flex-flow: row nowrap;
+
+                    #split{
+                        margin: 0 16px;
+                        width: 18px;
+                        height: 226px;
+                        user-select: none;
+
+                        &::before,
+                        &::after{
+                            content:"";
+                            display: inline-block;
+                            background-color: $slate;
+                            position: absolute;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            width: 2px;
+                            height: 96px;
+                        }
+
+                        &:before{
+                            top: 0;
+                        }
+
+                        &:after{
+                            bottom: 0;
+                        }
+
+                        span{
+                            position: absolute;
+                            top: 50%;
+                            left: -50%;
+                            transform: translateY(-50%);
+                            width: 0;
+                            text-align: center;
+                            font-size: 13px;
+                            font-weight: bold;
+                            color: $slate;
+                            opacity: 0.87;
+                        }
+                    }
+
+                    form{
+                        padding: 16px;
+                        width: 100%;
+                    }
+                }
+            }
+        }
     }
 
     .c-checkout_summary{
@@ -404,6 +481,132 @@ body{
                     box-shadow: 0 2px 8px rgba($checkout-green, 0.6);
                 }
             }
+        }
+    }
+}
+
+.o-checkout-input{
+    display: inline-block;
+    width: 100%;
+    height: 48px;
+    margin-bottom: 18px;
+
+    &:hover{
+        input{
+            border-color: rgba($gray, 0.6);
+        }
+        label{
+            color: rgba($gray, 0.6) !important;
+        }
+    }
+
+    &.has-focus{
+        input{
+            border-color: rgba($primary, 0.87);
+            color: rgba($font, 0.87);
+        }
+        label{
+            color: rgba($primary, 0.87) !important;
+            font-size: 13px;
+            transform: translateY(-8px);
+            transition: color 150ms $ease, transform 150ms $ease-in, font-size 150ms $ease-in;
+        }
+    }
+
+    &.has-value{
+        label{
+            color: $slate;
+            font-size: 13px;
+            transform: translateY(-8px);
+            transition: color 150ms $ease, transform 150ms $ease-in, font-size 150ms $ease-in;
+        }
+    }
+
+    input{
+        font-size: 16px;
+        color: rgba($font, 0.6);
+        line-height: 48px;
+        width: 100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        border: 2px solid $slate;
+        border-radius: 4px;
+        padding: 0 16px;
+        transition: all 150ms $ease;
+    }
+
+    label{
+        font-size: 16px;
+        position: absolute;
+        top: 0;
+        left: 12px;
+        transform: translateY(14px);
+        color: $slate;
+        transition: color 150ms $ease, transform 150ms $ease-sharp, font-size 150ms $ease-sharp;
+        user-select: none;
+        pointer-events: none;
+        background-color: $white;
+        padding: 0 4px;
+    }
+}
+
+.o-checkout-button{
+    height: 36px;
+    line-height: 36px;
+    padding: 0 16px;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: all 150ms $ease;
+    text-transform: uppercase;
+    cursor: pointer;
+    user-select: none;
+
+    &:not(:only-child){
+        margin: 0 8px;
+
+        &:first-child{
+            margin-left: 0;
+        }
+
+        &:last-child{
+            margin-right: 0;
+        }
+    }
+
+    &.-raised{
+        color: $white;
+        background-color: $primary;
+        box-shadow: 0 1px 2px rgba($primary, 0.3);
+
+        &.-alt{
+            background-color: $white;
+            color: rgba($primary, 0.87);
+            box-shadow: 0 1px 2px rgba($primary, 0.15);
+        }
+    }
+}
+
+.o-checkout-link{
+    height: 36px;
+    line-height: 36px;
+    padding: 0 2px;
+    font-size: 16px;
+    color: rgba($primary, 0.6);
+    transition: all 150ms $ease;
+
+    &:hover{
+        color: rgba($primary, 0.87);
+    }
+}
+
+.o-checkout-form{
+    .o-checkout-form_buttons{
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+
+        &.-right{
+            justify-content: flex-end;
         }
     }
 }

@@ -93,13 +93,31 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class Checkout {
     constructor() {
+        this.handleBlur = (e) => {
+            const target = e.currentTarget;
+            target.parentElement.classList.remove('has-focus');
+            if (target.value !== '') {
+                target.parentElement.classList.add('has-value');
+            }
+            else {
+                target.parentElement.classList.remove('has-value');
+            }
+        };
+        this.handleFocus = (e) => {
+            const target = e.currentTarget;
+            target.parentElement.classList.add('has-focus');
+        };
+        this._inputs = Array.from(document.body.querySelectorAll('input'));
         this.init();
     }
     /**
      * Called when the class has be created.
      */
     init() {
-        console.log('Checkout started');
+        this._inputs.forEach((input) => {
+            input.addEventListener('focus', this.handleFocus);
+            input.addEventListener('blur', this.handleBlur);
+        });
     }
 }
 exports.Checkout = Checkout;

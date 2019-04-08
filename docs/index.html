@@ -101,7 +101,49 @@
             <button class="js-pay-button c-checkout_summary_button">Complete Checkout</button>
         </aside>
         <section class="c-checkout_sections">
-            <div class="c-checkout_modal" data-section="Account Information">
+            <div class="c-checkout_section" data-section="Account Information">
+                <h1>Account Information</h1>
+                <div class="c-checkout_modal" id="account-information">
+                    <form class="o-checkout-form">
+                        <div class="o-checkout-input">
+                            <input type="email" name="loginEmailAddress" id="loginEmailAddress" required>
+                            <label for="loginEmailAddress">Email Address</label>
+                        </div>
+                        <div class="o-checkout-input">
+                            <input type="password" name="loginPassword" id="loginPassword" required>
+                            <label for="loginPassword">Password</label>
+                        </div>
+                        <div class="o-checkout-form_buttons">
+                            <a href="#" class="o-checkout-link">Forgot Password</a>
+                            <button type="submit" class="o-checkout-button -raised">Login</button>
+                        </div>
+                    </form>
+                    <div id="split">
+                        <span>OR</span>
+                    </div>
+                    <form class="o-checkout-form">
+                        <div class="o-checkout-input">
+                            <input type="email" name="guestEmailAddress" id="guestEmailAddress" required>
+                            <label for="guestEmailAddress">Email Address</label>
+                        </div>
+                        <div class="o-checkout-input">
+                            <input type="text" name="guestName" id="guestName" required>
+                            <label for="guestName">Full Name</label> 
+                        </div>
+                        <div class="o-checkout-input">
+                            <input type="password" name="guestPassword" id="guestPassword">
+                            <label for="guestPassword">Password</label>
+                        </div>
+                        <div class="o-checkout-input">
+                                <input type="password" name="verifyPassword" id="verifyPassword">
+                                <label for="verifyPassword">Verify Password</label>
+                            </div>
+                        <div class="o-checkout-form_buttons -right">
+                                <button type="submit" class="o-checkout-button -raised -alt">Guest Checkout</button>
+                            <button type="submit" class="o-checkout-button -raised">Login</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </section>
     </article>
