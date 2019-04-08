@@ -134,8 +134,7 @@ body{
     width: 100vw;
     max-width: 1196px;
     padding: 0 16px;
-    margin-top: 160px;
-    overflow: hidden;
+    margin-top: 96px;
 
     .c-checkout_sections{
         width: 100%;
@@ -143,10 +142,13 @@ body{
         margin-right: 32px;
         vertical-align: top;
         order: 1;
-        display: inline-flex;
-        flex-flow: column wrap;
+        display: inline-block;
+        overflow: hidden;
         overflow-y: auto;
         scroll-behavior: smooth;
+        max-height: calc(100vh - 96px);
+        padding-top: 64px;
+        padding-bottom: 33vh;
 
         .c-checkout_section{
             padding-top: 49px;
@@ -360,6 +362,7 @@ body{
         width: 100%;
         max-width: calc(100% - 788px);
         order: 2;
+        padding-top: 64px;
 
         .c-checkout_summary_heading{
             display: flex;
