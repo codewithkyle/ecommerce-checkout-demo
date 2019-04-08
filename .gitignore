@@ -2,3 +2,4 @@ node_modules
 _compiled
 .stylelintcache
 .editorconfig
+.DS_Store
