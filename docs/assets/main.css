@@ -31,7 +31,8 @@ body {
   border-color: #E1E6F0;
   position: fixed;
   top: 0;
-  left: 0; }
+  left: 0;
+  z-index: 1000; }
   .c-checkout-header .c-checkout-header_wrapper {
     display: flex;
     margin: 0 auto;
@@ -135,6 +136,7 @@ body {
               content: "";
               display: inline-block;
               background-color: #E1E6F0;
+              opacity: 0.87;
               position: absolute;
               left: 50%;
               transform: translateX(-50%);
@@ -158,6 +160,88 @@ body {
           .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#account-information form {
             padding: 16px;
             width: 100%; }
+        .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards {
+          width: 100%;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 16px; }
+          .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_card {
+            display: inline-block;
+            padding: 16px;
+            border-radius: 8px;
+            border: 2px solid #E1E6F0;
+            background-color: #ffffff;
+            cursor: pointer;
+            transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+            .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_card:hover {
+              border-color: rgba(161, 162, 166, 0.6); }
+              .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_card:hover svg .cls-2 {
+                stroke: rgba(161, 162, 166, 0.6); }
+              .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_card:hover svg .cls-3 {
+                fill: rgba(161, 162, 166, 0.6); }
+            .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_card.is-selected {
+              box-shadow: 0 2px 8px rgba(104, 130, 191, 0.15);
+              border-color: #6882BF; }
+              .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_card.is-selected svg .cls-2 {
+                stroke: #6882BF; }
+              .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_card.is-selected svg .cls-3 {
+                fill: #6882BF; }
+            .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_card svg {
+              vertical-align: top; }
+              .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_card svg .cls-2 {
+                fill: none;
+                stroke: #E1E6F0;
+                stroke-miterlimit: 10;
+                stroke-width: 3px;
+                transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+              .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_card svg .cls-3 {
+                fill: #E1E6F0;
+                transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+            .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_card .o-address-cards_card_details {
+              width: calc(100% - 41px);
+              margin-left: 16px;
+              vertical-align: top; }
+              .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_card .o-address-cards_card_details li {
+                font-size: 13px;
+                line-height: 21px;
+                color: #A1A2A6;
+                opacity: 0.6;
+                width: 100%; }
+                .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_card .o-address-cards_card_details li.has-highlight {
+                  font-size: 16px;
+                  color: #38293E;
+                  line-height: 25px;
+                  opacity: 0.87; }
+          .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_new {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            flex-flow: column nowrap;
+            padding: 16px;
+            border-radius: 8px;
+            border: 2px dashed #E1E6F0;
+            cursor: pointer;
+            transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+            .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_new:hover {
+              border-color: rgba(161, 162, 166, 0.6); }
+              .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_new:hover .o-address-cards_new_details svg,
+              .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_new:hover .o-address-cards_new_details span {
+                color: rgba(161, 162, 166, 0.6); }
+            .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_new .o-address-cards_new_details {
+              display: inline-block;
+              position: relative;
+              user-select: none; }
+              .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_new .o-address-cards_new_details svg {
+                color: rgba(225, 230, 240, 0.87);
+                height: 32px;
+                display: block;
+                margin: 0 auto 8px;
+                transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+              .c-checkout .c-checkout_sections .c-checkout_section .c-checkout_modal#addresses .o-address-cards .o-address-cards_new .o-address-cards_new_details span {
+                font-size: 16px;
+                text-transform: uppercase;
+                color: rgba(225, 230, 240, 0.87);
+                transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
   .c-checkout .c-checkout_summary {
     display: inline-block;
     vertical-align: top;
@@ -410,11 +494,11 @@ body {
   .o-checkout-button.-raised {
     color: #ffffff;
     background-color: #6882BF;
-    box-shadow: 0 1px 2px rgba(104, 130, 191, 0.3); }
+    box-shadow: 0 1px 4px rgba(104, 130, 191, 0.3); }
     .o-checkout-button.-raised.-alt {
       background-color: #ffffff;
       color: rgba(104, 130, 191, 0.87);
-      box-shadow: 0 1px 2px rgba(104, 130, 191, 0.15); }
+      box-shadow: 0 2px 4px rgba(104, 130, 191, 0.1); }
 
 .o-checkout-link {
   height: 36px;

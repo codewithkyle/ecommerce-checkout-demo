@@ -107,7 +107,15 @@ class Checkout {
             const target = e.currentTarget;
             target.parentElement.classList.add('has-focus');
         };
+        this.toggleAddressCard = (e) => {
+            const target = e.currentTarget;
+            this._addressCards.forEach((card) => {
+                card.classList.remove('is-selected');
+            });
+            target.classList.add('is-selected');
+        };
         this._inputs = Array.from(document.body.querySelectorAll('input'));
+        this._addressCards = Array.from(document.body.querySelectorAll('.js-address-card'));
         this.init();
     }
     /**
@@ -117,6 +125,9 @@ class Checkout {
         this._inputs.forEach((input) => {
             input.addEventListener('focus', this.handleFocus);
             input.addEventListener('blur', this.handleBlur);
+        });
+        this._addressCards.forEach((card) => {
+            card.addEventListener('click', this.toggleAddressCard);
         });
     }
 }

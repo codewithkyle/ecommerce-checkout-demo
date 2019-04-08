@@ -51,6 +51,7 @@ body{
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 1000;
 
     .c-checkout-header_wrapper{
         display: flex;
@@ -184,6 +185,7 @@ body{
                             content:"";
                             display: inline-block;
                             background-color: $slate;
+                            opacity: 0.87;
                             position: absolute;
                             left: 50%;
                             transform: translateX(-50%);
@@ -216,6 +218,136 @@ body{
                     form{
                         padding: 16px;
                         width: 100%;
+                    }
+                }
+
+                &#addresses{
+                    .o-address-cards{
+                        width: 100%;
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 16px;
+
+                        .o-address-cards_card{
+                            display: inline-block;
+                            padding: 16px;
+                            border-radius: 8px;
+                            border: 2px solid $slate;
+                            background-color: $white;
+                            cursor: pointer;
+                            transition: all 150ms $ease;
+
+                            &:hover{
+                                border-color: rgba($gray, 0.6);
+
+                                svg{
+                                    .cls-2 {
+                                        stroke: rgba($gray, 0.6);
+                                    }
+                                    
+                                    .cls-3 {
+                                        fill: rgba($gray, 0.6);
+                                    }
+                                }
+                            }
+
+                            &.is-selected{
+                                box-shadow: 0 2px 8px rgba($primary, 0.15);
+                                border-color: $primary;
+
+                                svg{
+                                    .cls-2 {
+                                        stroke: $primary;
+                                    }
+                                    
+                                    .cls-3 {
+                                        fill: $primary;
+                                    }
+                                }
+                            }
+
+                            svg{
+                                vertical-align: top;
+                                
+                                .cls-2 {
+                                    fill: none;
+                                    stroke: $slate;
+                                    stroke-miterlimit: 10;
+                                    stroke-width: 3px;
+                                    transition: all 150ms $ease;
+                                }
+                                
+                                .cls-3 {
+                                    fill: $slate;
+                                    transition: all 150ms $ease;
+                                }
+                            }
+
+                            .o-address-cards_card_details{
+                                width: calc(100% - 41px);
+                                margin-left: 16px;
+                                vertical-align: top;
+
+                                li{
+                                    font-size: 13px;
+                                    line-height: 21px;
+                                    color: $gray;
+                                    opacity: 0.6;
+                                    width: 100%;
+
+                                    &.has-highlight{
+                                        font-size: 16px;
+                                        color: $font;
+                                        line-height: 25px;
+                                        opacity: 0.87;
+                                    }
+                                }
+                            }
+                        }
+
+                        .o-address-cards_new{
+                            display: inline-flex;
+                            justify-content: center;
+                            align-items: center;
+                            flex-flow: column nowrap;
+                            padding: 16px;
+                            border-radius: 8px;
+                            border: 2px dashed $slate;
+                            cursor: pointer;
+                            transition: all 150ms $ease;
+
+                            &:hover{
+                                border-color: rgba($gray, 0.6);
+
+                                .o-address-cards_new_details{
+                                    svg,
+                                    span{
+                                        color: rgba($gray, 0.6);
+                                    }
+                                }
+                            }
+
+                            .o-address-cards_new_details{
+                                display: inline-block;
+                                position: relative;
+                                user-select: none;
+
+                                svg{
+                                    color: rgba($slate, 0.87);
+                                    height: 32px;
+                                    display: block;
+                                    margin: 0 auto 8px;
+                                    transition: all 150ms $ease;
+                                }
+
+                                span{
+                                    font-size: 16px;
+                                    text-transform: uppercase;
+                                    color: rgba($slate, 0.87);
+                                    transition: all 150ms $ease;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -576,12 +708,12 @@ body{
     &.-raised{
         color: $white;
         background-color: $primary;
-        box-shadow: 0 1px 2px rgba($primary, 0.3);
+        box-shadow: 0 1px 4px rgba($primary, 0.3);
 
         &.-alt{
             background-color: $white;
             color: rgba($primary, 0.87);
-            box-shadow: 0 1px 2px rgba($primary, 0.15);
+            box-shadow: 0 2px 4px rgba($primary, 0.1);
         }
     }
 }
