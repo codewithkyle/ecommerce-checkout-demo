@@ -1,4 +1,5 @@
 import { Account } from './checkout/Account';
+import { Address } from './checkout/Address';
 
 export class Checkout{
 
@@ -32,19 +33,12 @@ export class Checkout{
     private manageNextStep():void{
         // User moved to the address input step
         if(this._step === 1){
-            (async ()=>{
-                const request = await fetch(`${ window.location.origin }${ window.location.pathname }address.html`);
-                const response = await request.text();
+            this.el.classList.remove('is-hidden');
+            this._loginModal.classList.add('is-hidden');
+            const shippingAddressSection = <HTMLElement>this.el.querySelector('[data-section="Shipping Address"]');
+            shippingAddressSection.classList.add('is-visible');
 
-                const newSection = document.createElement('section');
-                newSection.classList.add('c-checkout_section', 'is-visible');
-                newSection.dataset.section = 'Address';
-                newSection.innerHTML = response;
-
-                this._sectionsContainer.appendChild(newSection);
-                this.el.classList.remove('is-hidden');
-                this._loginModal.classList.add('is-hidden');
-            })();
+            new Address(shippingAddressSection, this);
         }
     }
 

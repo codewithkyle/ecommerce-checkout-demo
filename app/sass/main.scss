@@ -28,3 +28,135 @@ body{
         text-decoration: none;
     }
 }
+
+.c-progress-spinner{
+    &.-circle{
+        width: 24px;
+        height: 24px;
+        position: relative;
+        box-sizing: border-box;
+        display: inline-block;
+
+        .c-progress-spinner_wrapper{
+            animation: infiniteCircleWrapper 2666ms linear infinite;
+            box-sizing: border-box;
+            display: block;
+            width: 100%;
+            height: 100%;
+
+            .c-progress-spinner_inner{
+                width: 100%;
+                height: 100%;
+                position: relative;
+                box-sizing: border-box;
+                animation: infiniteCircleInner 5332ms $ease infinite;
+
+                .c-progress-spinner_left,
+                .c-progress-spinner_right{
+                    position: absolute;
+                    width: 50%;
+                    height: 100%;
+                    overflow: hidden;
+                    box-sizing: border-box;
+                    top: 0;
+
+                    .c-progress-spinner_spinner{
+                        position: absolute;
+                        width: 24px;
+                        height: 24px;
+                        border-width: 3px;
+                        border-style: solid;
+                        border-radius: 50%;
+                        box-sizing: border-box;
+                        top: 0;
+                        border-color: $notice;
+                    }
+                }
+
+                .c-progress-spinner_left{
+                    left: 0;
+
+                    .c-progress-spinner_spinner{
+                        left: 0;
+                        border-right-color: transparent;
+                        animation: infiniteCircleSpinnerLeft 1333ms $ease infinite;
+                    }
+                }
+
+                .c-progress-spinner_right{
+                    right: 0;
+
+                    .c-progress-spinner_spinner{
+                        right: 0;
+                        border-left-color: transparent;
+                        animation: infiniteCircleSpinnerRight 1333ms $ease infinite;
+                    }
+                }
+
+                .c-progress-spinner_gap{
+                    border-width: 0;
+                    border-top-width: 2px;
+                    border-style: solid;
+                    position: absolute;
+                    top: 0;
+                    right: 1.1875rem;
+                    bottom: 0;
+                    left: 1.1875rem;
+                }
+            }
+        }
+    }
+}
+
+@keyframes infiniteCircleSpinnerRight{
+    0%,
+    100%{
+        transform: rotate(-130deg);
+    }
+    50%{
+        transform: rotate(5deg);
+    }
+}
+
+@keyframes infiniteCircleSpinnerLeft{
+    0%,
+    100%{
+        transform: rotate(130deg);
+    }
+    50%{
+        transform: rotate(-5deg);
+    }
+}
+
+@keyframes infiniteCircleInner{
+    12.5% {
+    transform: rotate(135deg);
+    }
+    25% {
+    transform: rotate(270deg);
+    }
+    37.5% {
+    transform: rotate(405deg);
+    }
+    50% {
+    transform: rotate(540deg);
+    }
+    62.5% {
+    transform: rotate(675deg);
+    }
+    75% {
+    transform: rotate(810deg);
+    }
+    87.5% {
+    transform: rotate(945deg);
+    }
+    100% {
+    transform: rotate(1080deg);
+    }
+}
+
+@keyframes infiniteCircleWrapper{
+    100%{
+        transform: rotate(360deg);
+    }
+}

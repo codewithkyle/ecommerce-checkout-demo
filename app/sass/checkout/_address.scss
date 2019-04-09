@@ -125,6 +125,33 @@
                 }
             }
         }
+
+        .o-address-cards_placeholder{
+            display: inline-block;
+            padding: 16px;
+            height: 158px;
+            border-radius: 8px;
+            background-color: $off-white;
+            overflow: hidden;
+
+            &:nth-child(even){
+                &:after{
+                    animation-delay: 250ms;
+                }
+            }
+
+            &::after{
+                content:"";
+                background: linear-gradient(to right, transparent, rgba($slate, 0.2), transparent);
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 200%;
+                height: 100%;
+                transform: translateX(-200%);
+                animation: loadingCard 2000ms linear infinite;
+            }
+        }
     }
 
     .o-address-form{
@@ -169,5 +196,14 @@
             opacity: 1;
             transition: all 300ms $ease-in, opacity 300ms $ease;
         }
+    }
+}
+
+@keyframes loadingCard{
+    0%,10%{
+        transform: translateX(-200%);
+    }
+    90%, 100%{
+        transform: translateX(200%);
     }
 }

@@ -1,6 +1,7 @@
-export class UserAddresses{
+export class Address{
 
     public el:  HTMLElement;
+    public checkout: Checkout;
 
     private _addressCards:  Array<HTMLElement>;
     private _newAddressCard:    HTMLElement;
@@ -11,9 +12,10 @@ export class UserAddresses{
     private _additionalAddressLine:     number;
     private _additionalAddressLinesWrapper: HTMLElement;
 
-    constructor(modal:HTMLElement){
+    constructor(modal:HTMLElement, checkout:Checkout){
 
         this.el = modal;
+        this.checkout = checkout;
 
         this._addressCards              = Array.from(this.el.querySelectorAll('.js-address-card'));
         this._newAddressCard            = this.el.querySelector('.js-new-address-card');

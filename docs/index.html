@@ -149,6 +149,37 @@
             <button class="js-pay-button c-checkout_summary_button">Complete Checkout</button>
         </aside>
         <article class="js-checkout-section-container c-checkout_sections">
+            <section class="c-checkout_section" data-section="Shipping Address">
+                <h1>Shipping Address</h1>
+                <div class="c-checkout_modal c-address is-loading">
+                    <div class="o-address-cards">
+                        <div class="o-address-cards_placeholder"></div>
+                        <div class="o-address-cards_placeholder"></div>
+                        <div class="o-address-cards_placeholder"></div>
+                        <div class="o-address-cards_placeholder"></div>
+                    </div>
+                    <div class="o-address-form js-new-address-form">
+                        <h2>New Shipping Address</h2>
+                        <form class="o-checkout-form">
+                            <div class="o-checkout-input">
+                                <input type="text" name="newStreetAddress" id="newStreetAddress" required>
+                                <label for="newStreetAddress">Street Address</label>
+                            </div>
+                            <div class="o-address-form_extra_lines js-additional-address-lines"></div>
+                            <div class="o-checkout-form_buttons -left">
+                                <button class="js-add-new-address-line o-checkout-button -outline has-icon">
+                                    <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="plus" class="svg-inline--fa fa-plus fa-w-12" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M368 224H224V80c0-8.84-7.16-16-16-16h-32c-8.84 0-16 7.16-16 16v144H16c-8.84 0-16 7.16-16 16v32c0 8.84 7.16 16 16 16h144v144c0 8.84 7.16 16 16 16h32c8.84 0 16-7.16 16-16V288h144c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16z"></path></svg>
+                                    <span>Address Line</span>
+                                </button>
+                            </div>
+                            <div id="overflow-fix" class="o-checkout-form_buttons -left">
+                                <button type="submit" class="js-add-new-address o-checkout-button -raised is-disabled">Add Address</button>
+                                <button type="reset" class="js-cancel-new-address o-checkout-button -raised -alt">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
         </article>
     </main>
 </body>

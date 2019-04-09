@@ -90,16 +90,9 @@
 
 "use strict";
 
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const Account_1 = __webpack_require__(1);
+const Address_1 = __webpack_require__(2);
 class Checkout {
     constructor() {
         this.el = document.body.querySelector('.js-checkout');
@@ -119,17 +112,11 @@ class Checkout {
     manageNextStep() {
         // User moved to the address input step
         if (this._step === 1) {
-            (() => __awaiter(this, void 0, void 0, function* () {
-                const request = yield fetch(`${window.location.origin}${window.location.pathname}address.html`);
-                const response = yield request.text();
-                const newSection = document.createElement('section');
-                newSection.classList.add('c-checkout_section', 'is-visible');
-                newSection.dataset.section = 'Address';
-                newSection.innerHTML = response;
-                this._sectionsContainer.appendChild(newSection);
-                this.el.classList.remove('is-hidden');
-                this._loginModal.classList.add('is-hidden');
-            }))();
+            this.el.classList.remove('is-hidden');
+            this._loginModal.classList.add('is-hidden');
+            const shippingAddressSection = this.el.querySelector('[data-section="Shipping Address"]');
+            shippingAddressSection.classList.add('is-visible');
+            new Address_1.Address(shippingAddressSection, this);
         }
     }
     set(key, value) {
@@ -238,6 +225,83 @@ class Account {
 }
 exports.Account = Account;
 //# sourceMappingURL=Account.js.map
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+class Address {
+    constructor(modal, checkout) {
+        this.toggleAddressCard = (e) => {
+            const target = e.currentTarget;
+            this._addressCards.forEach((card) => {
+                card.classList.remove('is-selected');
+            });
+            target.classList.add('is-selected');
+        };
+        /**
+         * Called when the New Address card is clicked.
+         */
+        this.showNewAddressForm = (e) => {
+            this._addressCards.forEach((card) => {
+                card.classList.remove('is-selected');
+            });
+            this._additionalAddressLine = 0;
+            this._additionalAddressLinesWrapper.innerHTML = '';
+            this._newAddressInput.classList.add('is-visible');
+            this._newAddressInput.style.height = `${this._newAddressInput.scrollHeight}px`;
+        };
+        this.hideNewAddressForm = (e) => {
+            this._newAddressInput.classList.remove('is-visible');
+            this._newAddressInput.style.height = '0px';
+            const newAddressInputs = Array.from(this._newAddressInput.querySelectorAll('input'));
+            newAddressInputs.forEach((input) => {
+                input.value = '';
+                input.parentElement.classList.remove('has-focus', 'has-value');
+            });
+        };
+        this.submitNewAddressForm = (e) => {
+            e.preventDefault();
+            console.warn('Missing form submission logic');
+        };
+        this.addNewAddressLine = (e) => {
+            e.preventDefault();
+            this._additionalAddressLine++;
+            const newAddressLine = document.createElement('div');
+            newAddressLine.dataset.lineNumber = this._additionalAddressLine.toString();
+            newAddressLine.classList.add('o-checkout-input');
+            newAddressLine.innerHTML = `<input type="text" name="newStreetAddressLine${this._additionalAddressLine}" id="newStreetAddressLine${this._additionalAddressLine}">`;
+            newAddressLine.innerHTML += `<label for="newStreetAddressLine${this._additionalAddressLine}">Address Line ${this._additionalAddressLine}</label>`;
+            this._additionalAddressLinesWrapper.appendChild(newAddressLine);
+            this._newAddressInput.style.height = `${this._newAddressInput.scrollHeight}px`;
+        };
+        this.el = modal;
+        this.checkout = checkout;
+        this._addressCards = Array.from(this.el.querySelectorAll('.js-address-card'));
+        this._newAddressCard = this.el.querySelector('.js-new-address-card');
+        this._newAddressInput = this.el.querySelector('.js-new-address-form');
+        this._cancelNewAddressButton = this.el.querySelector('.js-cancel-new-address');
+        this._addNewAddressButton = this.el.querySelector('.js-add-new-address');
+        this._addNewAddressLineButton = this.el.querySelector('.js-add-new-address-line');
+        this._additionalAddressLine = 0;
+        this._additionalAddressLinesWrapper = this.el.querySelector('.js-additional-address-lines');
+    }
+    init() {
+        // Address
+        this._addressCards.forEach((card) => {
+            card.addEventListener('click', this.toggleAddressCard);
+        });
+        this._newAddressCard.addEventListener('click', this.showNewAddressForm);
+        this._cancelNewAddressButton.addEventListener('click', this.hideNewAddressForm);
+        this._addNewAddressButton.addEventListener('click', this.submitNewAddressForm);
+        this._addNewAddressLineButton.addEventListener('click', this.addNewAddressLine);
+    }
+}
+exports.Address = Address;
+//# sourceMappingURL=Address.js.map
 
 /***/ })
 /******/ ]);
