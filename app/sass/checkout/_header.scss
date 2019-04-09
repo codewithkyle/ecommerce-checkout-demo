@@ -1,0 +1,85 @@
+.c-checkout-header{
+    width: 100vw;
+    height: 96px;
+    background-color: $white;
+    border-width: 0 0 2px 0;
+    border-style: solid;
+    border-color: $slate;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+
+    .c-checkout-header_wrapper{
+        display: flex;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 1196px;
+        padding: 0 16px;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+
+        img{
+            max-width: 128px;
+        }
+
+        .c-checkout-header_button{
+            min-width: 48px;
+            height: 48px;
+            border-radius: 24px;
+            background-color: rgba($slate, 0.3);
+            color: rgba($font, 0.87);
+            display: inline-flex;
+            align-items: center;
+
+            @include hover{
+                .c-checkout-header_button_shim{
+                    width: 158px;
+                    margin: 0 24px;
+                    transition: all 300ms $ease-in;
+
+                    span{
+                        opacity: 0.87;
+                        transition: all 300ms $ease;
+                    }
+                }
+
+                svg{
+                    transform: translateX(24px);
+                    transition: all 300ms $ease-in;
+                }
+            }
+
+            svg{
+                width: 24px;
+                position: relative;
+                transform: translateX(11px);
+                transition: all 300ms $ease-sharp;
+            }
+
+            .c-checkout-header_button_shim{
+                height: 100%;
+                position: relative;
+                width: 0;
+                overflow: hidden;
+                transition: all 300ms $ease-sharp;
+                will-change: width;
+                white-space: nowrap;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0;
+
+                span{
+                    text-align: center;
+                    position: relative;
+                    font-size: 16px;
+                    color: $font;
+                    opacity: 0;
+                    transition: all 300ms $ease;
+                }
+            }
+        }
+    }
+}

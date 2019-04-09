@@ -1,0 +1,65 @@
+.c-checkout{
+    margin: 0 auto;
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100vw;
+    max-width: 1196px;
+    padding: 0 16px;
+    margin-top: 96px;
+    transform: translateY(0);
+    transition: all 150ms 150ms $ease-in;
+
+    &.is-hidden{
+        opacity: 0;
+        transform: translateY(25px);
+        pointer-events: none;
+    }
+
+    .c-checkout_sections{
+        width: 100%;
+        max-width: 756px;
+        margin-right: 32px;
+        vertical-align: top;
+        order: 1;
+        display: inline-block;
+        overflow: hidden;
+        overflow-y: auto;
+        scroll-behavior: smooth;
+        max-height: calc(100vh - 96px);
+        padding-top: 64px;
+        padding-bottom: 33vh;
+
+        .c-checkout_section{
+            padding-top: 49px;
+            padding-bottom: 48px;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(-25px);
+            transition: all 150ms $ease-in;
+
+            &.is-visible{
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            h1{
+                position: absolute;
+                top: 0;
+                left: 0;
+                font-size: 20px;
+                color: $font;
+                opacity: 0.87;
+                font-weight: 500;
+            }
+
+            .c-checkout_modal{
+                width: 100%;
+                border-radius: 0 0 8px 8px;
+                background-color: $white;
+                box-shadow: 0 2px 4px rgba($cool-black, 0.1);
+                border-top: 8px solid $primary;
+                padding: 16px;
+            }
+        }
+    }
+}

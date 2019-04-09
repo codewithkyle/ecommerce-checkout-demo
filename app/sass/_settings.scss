@@ -1,0 +1,25 @@
+$ease:          cubic-bezier(0.4, 0.0, 0.2, 1);
+$ease-sharp:    cubic-bezier(0.4, 0.0, 0.6, 1);
+$ease-in:       cubic-bezier(0.0, 0.0, 0.2, 1);
+$ease-out:      cubic-bezier(0.4, 0.0, 1, 1);
+
+$primary: #6882BF;
+$off-black: #404040;
+$checkout-green: #54EF96;
+$cool-black: #243141;
+$slate: #E1E6F0;
+$font: #38293E;
+$gray: #A1A2A6;
+$white: #ffffff;
+$cool-white: #F8F9FC;
+
+$error: #FF4949;
+$success: #13CE66;
+$notice: #1FB6FF;
+$warning: #FFC82C;
+
+@mixin hover {
+    &:hover{
+        @content;
+    }
+}

@@ -1,0 +1,82 @@
+.c-login{
+    width: 100vw;
+    max-width: 840px;
+    display: block;
+    position: fixed;
+    top: 160px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 150ms $ease-sharp;
+
+    &.is-hidden{
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    padding-top: 49px;
+
+    h1{
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-size: 20px;
+        color: $font;
+        opacity: 0.87;
+        font-weight: 500;
+    }
+}
+.c-account{
+    display: flex;
+    flex-flow: row nowrap;
+    border-radius: 0 0 8px 8px;
+    background-color: $white;
+    box-shadow: 0 2px 4px rgba($cool-black, 0.1);
+    border-top: 8px solid $primary;
+    padding: 16px;
+
+    #split{
+        margin: 0 16px;
+        width: 18px;
+        height: 226px;
+        user-select: none;
+
+        &::before,
+        &::after{
+            content:"";
+            display: inline-block;
+            background-color: $slate;
+            opacity: 0.87;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 96px;
+        }
+
+        &:before{
+            top: 0;
+        }
+
+        &:after{
+            bottom: 0;
+        }
+
+        span{
+            position: absolute;
+            top: 50%;
+            left: -50%;
+            transform: translateY(-50%);
+            width: 0;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+            color: $slate;
+            opacity: 0.87;
+        }
+    }
+
+    form{
+        padding: 16px;
+        width: 100%;
+    }
+}
