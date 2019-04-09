@@ -93,6 +93,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class Checkout {
     constructor() {
+        /**
+         * Called when an `HMLTInputElement` elements `blur` event is fired.
+         */
         this.handleBlur = (e) => {
             const target = e.currentTarget;
             target.parentElement.classList.remove('has-focus');
@@ -103,6 +106,9 @@ class Checkout {
                 target.parentElement.classList.remove('has-value');
             }
         };
+        /**
+         * Called with an `HTMLInputElement` elements `focus` event is fired.
+         */
         this.handleFocus = (e) => {
             const target = e.currentTarget;
             target.parentElement.classList.add('has-focus');
@@ -114,8 +120,51 @@ class Checkout {
             });
             target.classList.add('is-selected');
         };
+        /**
+         * Called when the New Address card is clicked.
+         */
+        this.showNewAddressForm = (e) => {
+            this._addressCards.forEach((card) => {
+                card.classList.remove('is-selected');
+            });
+            this._additionalAddressLine = 0;
+            this._additionalAddressLinesWrapper.innerHTML = '';
+            this._newAddressInput.classList.add('is-visible');
+            this._newAddressInput.style.height = `${this._newAddressInput.scrollHeight}px`;
+        };
+        this.hideNewAddressForm = (e) => {
+            this._newAddressInput.classList.remove('is-visible');
+            this._newAddressInput.style.height = '0px';
+            const newAddressInputs = Array.from(this._newAddressInput.querySelectorAll('input'));
+            newAddressInputs.forEach((input) => {
+                input.value = '';
+                input.parentElement.classList.remove('has-focus', 'has-value');
+            });
+        };
+        this.submitNewAddressForm = (e) => {
+            e.preventDefault();
+            console.warn('Missing form submission logic');
+        };
+        this.addNewAddressLine = (e) => {
+            e.preventDefault();
+            this._additionalAddressLine++;
+            const newAddressLine = document.createElement('div');
+            newAddressLine.dataset.lineNumber = this._additionalAddressLine.toString();
+            newAddressLine.classList.add('o-checkout-input');
+            newAddressLine.innerHTML = `<input type="text" name="newStreetAddressLine${this._additionalAddressLine}" id="newStreetAddressLine${this._additionalAddressLine}">`;
+            newAddressLine.innerHTML += `<label for="newStreetAddressLine${this._additionalAddressLine}">Address Line ${this._additionalAddressLine}</label>`;
+            this._additionalAddressLinesWrapper.appendChild(newAddressLine);
+            this._newAddressInput.style.height = `${this._newAddressInput.scrollHeight}px`;
+        };
         this._inputs = Array.from(document.body.querySelectorAll('input'));
         this._addressCards = Array.from(document.body.querySelectorAll('.js-address-card'));
+        this._newAddressCard = document.body.querySelector('.js-new-address-card');
+        this._newAddressInput = document.body.querySelector('.js-new-address-form');
+        this._cancelNewAddressButton = document.body.querySelector('.js-cancel-new-address');
+        this._addNewAddressButton = document.body.querySelector('.js-add-new-address');
+        this._addNewAddressLineButton = document.body.querySelector('.js-add-new-address-line');
+        this._additionalAddressLine = 0;
+        this._additionalAddressLinesWrapper = document.body.querySelector('.js-additional-address-lines');
         this.init();
     }
     /**
@@ -126,9 +175,14 @@ class Checkout {
             input.addEventListener('focus', this.handleFocus);
             input.addEventListener('blur', this.handleBlur);
         });
+        // Address
         this._addressCards.forEach((card) => {
             card.addEventListener('click', this.toggleAddressCard);
         });
+        this._newAddressCard.addEventListener('click', this.showNewAddressForm);
+        this._cancelNewAddressButton.addEventListener('click', this.hideNewAddressForm);
+        this._addNewAddressButton.addEventListener('click', this.submitNewAddressForm);
+        this._addNewAddressLineButton.addEventListener('click', this.addNewAddressLine);
     }
 }
 exports.Checkout = Checkout;

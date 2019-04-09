@@ -13,6 +13,12 @@ $gray: #A1A2A6;
 $white: #ffffff;
 $cool-white: #F8F9FC;
 
+@mixin hover {
+    &:hover{
+        @content;
+    }
+}
+
 html{
     display: block;
     width: 100vw;
@@ -76,7 +82,7 @@ body{
             display: inline-flex;
             align-items: center;
 
-            &:hover{
+            @include hover{
                 .c-checkout-header_button_shim{
                     width: 158px;
                     margin: 0 24px;
@@ -239,16 +245,16 @@ body{
                             cursor: pointer;
                             transition: all 150ms $ease;
 
-                            &:hover{
-                                border-color: rgba($gray, 0.6);
+                            @include hover{
+                                border-color: $gray;
 
                                 svg{
                                     .cls-2 {
-                                        stroke: rgba($gray, 0.6);
+                                        stroke: $gray;
                                     }
                                     
                                     .cls-3 {
-                                        fill: rgba($gray, 0.6);
+                                        fill: $gray;
                                     }
                                 }
                             }
@@ -318,13 +324,13 @@ body{
                             cursor: pointer;
                             transition: all 150ms $ease;
 
-                            &:hover{
-                                border-color: rgba($gray, 0.6);
+                            @include hover{
+                                border-color: $gray;
 
                                 .o-address-cards_new_details{
                                     svg,
                                     span{
-                                        color: rgba($gray, 0.6);
+                                        color: $gray;
                                     }
                                 }
                             }
@@ -349,6 +355,50 @@ body{
                                     transition: all 150ms $ease;
                                 }
                             }
+                        }
+                    }
+
+                    .o-address-form{
+                        height: 0;
+                        width: 100%;
+                        overflow: hidden;
+                        transition: all 300ms $ease-sharp, opacity 300ms $ease;
+                        margin-top: 0;
+                        will-change: height;
+                        opacity: 0;
+
+                        .o-checkout-button{
+                            svg{
+                                width: 12px;
+                                height: 12px;
+                            }
+                        }
+
+                        .o-address-form_extra_lines{
+                            width: 100%;
+                        }
+
+                        h2{
+                            font-size: 16px;
+                            color: rgba($font, 0.87);
+                            line-height: 25px;
+                            margin-bottom: 16px;
+                            display: block;
+                            font-weight: 500;
+                        }
+
+                        form{
+                            width: 100%;
+
+                            #overflow-fix{
+                                margin-bottom: 4px;
+                            }
+                        }
+
+                        &.is-visible{
+                            margin-top: 32px;
+                            opacity: 1;
+                            transition: all 300ms $ease-in, opacity 300ms $ease;
                         }
                     }
                 }
@@ -611,7 +661,7 @@ body{
                 background-color: $checkout-green;
                 box-shadow: 0 2px 8px rgba($checkout-green, 0.3);
 
-                &:hover{
+                @include hover{
                     background-color: lighten($checkout-green, 3);
                     box-shadow: 0 2px 8px rgba($checkout-green, 0.6);
                 }
@@ -626,7 +676,7 @@ body{
     height: 48px;
     margin-bottom: 18px;
 
-    &:hover{
+    @include hover{
         input{
             border-color: rgba($gray, 0.6);
         }
@@ -719,6 +769,37 @@ body{
             box-shadow: 0 2px 4px rgba($primary, 0.1);
         }
     }
+
+    &.-outline{
+        color: rgba($primary, 0.87);
+        border: 2px solid $slate;
+        font-size: 14px;
+        line-height: 32px;
+        background-color: rgba($primary, 0);
+
+        svg{
+            transform: translateY(1px);
+        }
+
+        @include hover{
+            background-color: rgba($primary, 0.05);
+            border-color: rgba($primary, 0.87);
+        }
+    }
+
+    &.has-icon{
+        padding-left: 12px;
+
+        svg{
+            margin-right: 4px;
+        }
+    }
+
+    &.is-disabled{
+        background-color: rgba($off-black, 0.05);
+        color: rgba($off-black, 0.15);
+        box-shadow: none;
+    }
 }
 
 .o-checkout-link{
@@ -729,7 +810,7 @@ body{
     color: rgba($primary, 0.6);
     transition: all 150ms $ease;
 
-    &:hover{
+    @include hover{
         color: rgba($primary, 0.87);
     }
 }
@@ -739,9 +820,18 @@ body{
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-between;
+        margin-bottom: 16px;
+
+        &:last-child{
+            margin-bottom: 0;
+        }
 
         &.-right{
             justify-content: flex-end;
+        }
+
+        &.-left{
+            justify-content: flex-start;
         }
     }
 }
