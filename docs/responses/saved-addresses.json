@@ -8,9 +8,9 @@
             ],
             "city": "Wyoming",
             "state": "MI",
-            "zip": 49519,
+            "zip": "49519",
             "country": "United States",
-            "phoneNumber": 6162282673
+            "phoneNumber": "6162282673"
         }
     ]
 }

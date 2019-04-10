@@ -1,4 +1,12 @@
 .c-address{
+    padding-bottom: 0 !important;
+
+    &.has-addresses{
+        .o-address-form{
+            margin-top: 32px;
+        }
+    }
+
     .o-address-cards{
         width: 100%;
         display: grid;
@@ -129,13 +137,8 @@
     }
 
     .o-address-form{
-        height: 0;
         width: 100%;
         overflow: hidden;
-        margin-top: 0;
-        will-change: height;
-        opacity: 0;
-        transform: translateY(25px);
 
         .o-checkout-button{
             svg{
@@ -163,13 +166,6 @@
             #overflow-fix{
                 margin-bottom: 4px;
             }
-        }
-
-        &.is-visible{
-            margin-top: 32px;
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 150ms $ease, transform 150ms $ease-in;
         }
     }
 }

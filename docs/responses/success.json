@@ -1,5 +1,5 @@
 {
-    "success": false,
+    "success": true,
     "addresses": [
         {
             "fullName": "Kyle Andrews",
@@ -9,19 +9,23 @@
             ],
             "city": "Wyoming",
             "state": "MI",
-            "zip": 49519,
+            "zip": "49519",
             "country": "United States",
-            "phoneNumber": "6162282673"
+            "phoneNumber": "+16162282673"
         },
         {
+            "label": "Family Home",
             "fullName": "Kyle Andrews",
             "addressLine1": "520 Discovery Drive",
             "additionalAddressLines": [],
             "city": "Wayland",
             "state": "MI",
-            "zip": 49348,
+            "zip": "49348",
             "country": "United States",
-            "phoneNumber": "6162282673"
+            "phoneNumber": "+16162282673"
         }
+    ],
+    "cardTokens": [
+        "tok_1ENlp12eZvKYlo2CleUHoe4j"
     ]
 }

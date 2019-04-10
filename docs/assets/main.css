@@ -515,119 +515,112 @@
     padding: 16px;
     width: 100%; }
 
-.c-address .o-address-cards {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px; }
-  .c-address .o-address-cards .o-address-cards_card {
-    display: inline-block;
-    padding: 16px;
-    border-radius: 8px;
-    border: 2px solid #E1E6F0;
-    min-height: 158px;
-    background-color: #ffffff;
-    cursor: pointer;
-    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
-    .c-address .o-address-cards .o-address-cards_card:hover {
-      border-color: #A1A2A6; }
-      .c-address .o-address-cards .o-address-cards_card:hover svg .cls-2 {
-        stroke: #A1A2A6; }
-      .c-address .o-address-cards .o-address-cards_card:hover svg .cls-3 {
-        fill: #A1A2A6; }
-    .c-address .o-address-cards .o-address-cards_card.is-selected {
-      box-shadow: 0 2px 8px rgba(104, 130, 191, 0.15);
-      border-color: #6882BF; }
-      .c-address .o-address-cards .o-address-cards_card.is-selected svg .cls-2 {
-        stroke: #6882BF; }
-      .c-address .o-address-cards .o-address-cards_card.is-selected svg .cls-3 {
-        fill: #6882BF; }
-    .c-address .o-address-cards .o-address-cards_card svg {
-      vertical-align: top; }
-      .c-address .o-address-cards .o-address-cards_card svg .cls-2 {
-        fill: none;
-        stroke: #E1E6F0;
-        stroke-miterlimit: 10;
-        stroke-width: 3px;
-        transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
-      .c-address .o-address-cards .o-address-cards_card svg .cls-3 {
-        fill: #E1E6F0;
-        transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
-    .c-address .o-address-cards .o-address-cards_card .o-address-cards_card_details {
-      width: calc(100% - 41px);
-      margin-left: 16px;
-      vertical-align: top; }
-      .c-address .o-address-cards .o-address-cards_card .o-address-cards_card_details li {
-        font-size: 14px;
-        line-height: 25px;
-        color: #A1A2A6;
-        opacity: 0.6;
-        width: 100%; }
-        .c-address .o-address-cards .o-address-cards_card .o-address-cards_card_details li.has-highlight {
-          font-size: 16px;
-          color: #38293E;
-          opacity: 0.87; }
-  .c-address .o-address-cards .o-address-cards_new {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    flex-flow: column nowrap;
-    padding: 16px;
-    min-height: 158px;
-    border-radius: 8px;
-    border: 2px dashed #E1E6F0;
-    cursor: pointer;
-    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
-    .c-address .o-address-cards .o-address-cards_new:hover {
-      border-color: #A1A2A6; }
-      .c-address .o-address-cards .o-address-cards_new:hover .o-address-cards_new_details svg,
-      .c-address .o-address-cards .o-address-cards_new:hover .o-address-cards_new_details span {
-        color: #A1A2A6; }
-    .c-address .o-address-cards .o-address-cards_new .o-address-cards_new_details {
+.c-address {
+  padding-bottom: 0 !important; }
+  .c-address.has-addresses .o-address-form {
+    margin-top: 32px; }
+  .c-address .o-address-cards {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px; }
+    .c-address .o-address-cards .o-address-cards_card {
       display: inline-block;
-      position: relative;
-      user-select: none; }
-      .c-address .o-address-cards .o-address-cards_new .o-address-cards_new_details svg {
-        color: rgba(225, 230, 240, 0.87);
-        height: 32px;
-        display: block;
-        margin: 0 auto 8px;
-        transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
-      .c-address .o-address-cards .o-address-cards_new .o-address-cards_new_details span {
-        font-size: 16px;
-        text-transform: uppercase;
-        color: rgba(225, 230, 240, 0.87);
-        transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
-
-.c-address .o-address-form {
-  height: 0;
-  width: 100%;
-  overflow: hidden;
-  margin-top: 0;
-  will-change: height;
-  opacity: 0;
-  transform: translateY(25px); }
-  .c-address .o-address-form .o-checkout-button svg {
-    width: 12px;
-    height: 12px; }
-  .c-address .o-address-form .o-address-form_extra_lines {
-    width: 100%; }
-  .c-address .o-address-form h2 {
-    font-size: 16px;
-    color: rgba(56, 41, 62, 0.87);
-    line-height: 25px;
-    margin-bottom: 16px;
-    display: block;
-    font-weight: 500; }
-  .c-address .o-address-form form {
-    width: 100%; }
-    .c-address .o-address-form form #overflow-fix {
-      margin-bottom: 4px; }
-  .c-address .o-address-form.is-visible {
-    margin-top: 32px;
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1), transform 150ms cubic-bezier(0, 0, 0.2, 1); }
+      padding: 16px;
+      border-radius: 8px;
+      border: 2px solid #E1E6F0;
+      min-height: 158px;
+      background-color: #ffffff;
+      cursor: pointer;
+      transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+      .c-address .o-address-cards .o-address-cards_card:hover {
+        border-color: #A1A2A6; }
+        .c-address .o-address-cards .o-address-cards_card:hover svg .cls-2 {
+          stroke: #A1A2A6; }
+        .c-address .o-address-cards .o-address-cards_card:hover svg .cls-3 {
+          fill: #A1A2A6; }
+      .c-address .o-address-cards .o-address-cards_card.is-selected {
+        box-shadow: 0 2px 8px rgba(104, 130, 191, 0.15);
+        border-color: #6882BF; }
+        .c-address .o-address-cards .o-address-cards_card.is-selected svg .cls-2 {
+          stroke: #6882BF; }
+        .c-address .o-address-cards .o-address-cards_card.is-selected svg .cls-3 {
+          fill: #6882BF; }
+      .c-address .o-address-cards .o-address-cards_card svg {
+        vertical-align: top; }
+        .c-address .o-address-cards .o-address-cards_card svg .cls-2 {
+          fill: none;
+          stroke: #E1E6F0;
+          stroke-miterlimit: 10;
+          stroke-width: 3px;
+          transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+        .c-address .o-address-cards .o-address-cards_card svg .cls-3 {
+          fill: #E1E6F0;
+          transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+      .c-address .o-address-cards .o-address-cards_card .o-address-cards_card_details {
+        width: calc(100% - 41px);
+        margin-left: 16px;
+        vertical-align: top; }
+        .c-address .o-address-cards .o-address-cards_card .o-address-cards_card_details li {
+          font-size: 14px;
+          line-height: 25px;
+          color: #A1A2A6;
+          opacity: 0.6;
+          width: 100%; }
+          .c-address .o-address-cards .o-address-cards_card .o-address-cards_card_details li.has-highlight {
+            font-size: 16px;
+            color: #38293E;
+            opacity: 0.87; }
+    .c-address .o-address-cards .o-address-cards_new {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      flex-flow: column nowrap;
+      padding: 16px;
+      min-height: 158px;
+      border-radius: 8px;
+      border: 2px dashed #E1E6F0;
+      cursor: pointer;
+      transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+      .c-address .o-address-cards .o-address-cards_new:hover {
+        border-color: #A1A2A6; }
+        .c-address .o-address-cards .o-address-cards_new:hover .o-address-cards_new_details svg,
+        .c-address .o-address-cards .o-address-cards_new:hover .o-address-cards_new_details span {
+          color: #A1A2A6; }
+      .c-address .o-address-cards .o-address-cards_new .o-address-cards_new_details {
+        display: inline-block;
+        position: relative;
+        user-select: none; }
+        .c-address .o-address-cards .o-address-cards_new .o-address-cards_new_details svg {
+          color: rgba(225, 230, 240, 0.87);
+          height: 32px;
+          display: block;
+          margin: 0 auto 8px;
+          transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+        .c-address .o-address-cards .o-address-cards_new .o-address-cards_new_details span {
+          font-size: 16px;
+          text-transform: uppercase;
+          color: rgba(225, 230, 240, 0.87);
+          transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+  .c-address .o-address-form {
+    width: 100%;
+    overflow: hidden; }
+    .c-address .o-address-form .o-checkout-button svg {
+      width: 12px;
+      height: 12px; }
+    .c-address .o-address-form .o-address-form_extra_lines {
+      width: 100%; }
+    .c-address .o-address-form h2 {
+      font-size: 16px;
+      color: rgba(56, 41, 62, 0.87);
+      line-height: 25px;
+      margin-bottom: 16px;
+      display: block;
+      font-weight: 500; }
+    .c-address .o-address-form form {
+      width: 100%; }
+      .c-address .o-address-form form #overflow-fix {
+        margin-bottom: 4px; }
 
 html {
   display: block;

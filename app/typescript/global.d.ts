@@ -7,6 +7,8 @@ interface IUser{
     email?: string;
     isGuest?: boolean;
     addresses?: Array<IAddress>;
+    cardTokens?: Array<string>;
+    paymentOptions?: Array<IPaymentOption>;
 }
 
 interface ILoginResponse{
@@ -24,12 +26,13 @@ interface ISavedAddressesResponse{
 }
 
 interface IAddress{
+    label?: string;
     fullName: string;
     addressLine1: string;
     additionalAddressLines?: Array<string>;
     city: string;
     state: string;
-    zip: number;
+    zip: string;
     country: string;
     phoneNumber: string;
 }
@@ -41,11 +44,11 @@ interface IShippingOptionsResponse{
 interface IShippingOption{
     name: string;
     estimatedDeliveryDate: string;
-    cost: number;
+    cost: string;
 }
 
 interface IPaymentOptionsResponse{
-    options: Array<IPaymentOption>;
+    cardTokens: Array<string>;
 }
 
 interface IPaymentOption{
