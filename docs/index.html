@@ -21,7 +21,7 @@
         </div>
     </header>
     <!-- Account Information -->
-    <div class="js-login-modal c-login">
+    <div class="js-login-modal c-login is-verification">
         <h1>Account Login</h1>
         <div class="c-account">
             <form class="js-login-form o-checkout-form">
@@ -151,12 +151,8 @@
         <article class="js-checkout-section-container c-checkout_sections">
             <section class="c-checkout_section" data-section="Shipping Address">
                 <h1>Shipping Address</h1>
-                <div class="c-checkout_modal c-address is-loading">
-                    <div class="o-address-cards">
-                        <div class="o-address-cards_placeholder"></div>
-                        <div class="o-address-cards_placeholder"></div>
-                        <div class="o-address-cards_placeholder"></div>
-                        <div class="o-address-cards_placeholder"></div>
+                <div class="c-checkout_modal c-address">
+                    <div class="js-address-cards o-address-cards">
                     </div>
                     <div class="o-address-form js-new-address-form">
                         <h2>New Shipping Address</h2>
@@ -164,6 +160,7 @@
                             <div class="o-checkout-input">
                                 <input type="text" name="newStreetAddress" id="newStreetAddress" required>
                                 <label for="newStreetAddress">Street Address</label>
+                                <span class="o-checkout-input_message js-error-message"></span>
                             </div>
                             <div class="o-address-form_extra_lines js-additional-address-lines"></div>
                             <div class="o-checkout-form_buttons -left">
@@ -171,6 +168,35 @@
                                     <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="plus" class="svg-inline--fa fa-plus fa-w-12" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M368 224H224V80c0-8.84-7.16-16-16-16h-32c-8.84 0-16 7.16-16 16v144H16c-8.84 0-16 7.16-16 16v32c0 8.84 7.16 16 16 16h144v144c0 8.84 7.16 16 16 16h32c8.84 0 16-7.16 16-16V288h144c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16z"></path></svg>
                                     <span>Address Line</span>
                                 </button>
+                            </div>
+                            <div class="o-checkout-form-grid -thirds">
+                                <div class="o-checkout-input">
+                                    <input type="text" name="city" id="city" required>
+                                    <label for="city">City</label>
+                                    <span class="o-checkout-input_message js-error-message"></span>
+                                </div>
+                                <div class="o-checkout-input">
+                                    <input type="text" name="state" id="state" required>
+                                    <label for="state">State</label>
+                                    <span class="o-checkout-input_message js-error-message"></span>
+                                </div>
+                                <div class="o-checkout-input">
+                                    <input type="number" name="zip" id="zip" required>
+                                    <label for="zip">Zip Code</label>
+                                    <span class="o-checkout-input_message js-error-message"></span>
+                                </div>
+                            </div>
+                            <div class="o-checkout-form-grid -half">
+                                <div class="o-checkout-input">
+                                    <input type="text" name="country" id="country" required>
+                                    <label for="country">Country / Territory</label>
+                                    <span class="o-checkout-input_message js-error-message"></span>
+                                </div>
+                                <div class="o-checkout-input">
+                                    <input type="text" name="phoneNumber" id="phoneNumber" required>
+                                    <label for="phoneNumber">Phone Number</label>
+                                    <span class="o-checkout-input_message js-error-message"></span>
+                                </div>
                             </div>
                             <div id="overflow-fix" class="o-checkout-form_buttons -left">
                                 <button type="submit" class="js-add-new-address o-checkout-button -raised is-disabled">Add Address</button>

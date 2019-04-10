@@ -1,0 +1,22 @@
+{
+    "options": [
+        {
+            "cardholder": "Kyle Andrews",
+            "brand": "Discover",
+            "last4": "2833",
+            "expDate": "08/22"
+        },
+        {
+            "cardholder": "Kyle Andrews",
+            "brand": "VISA",
+            "last4": "4883",
+            "expDate": "03/15"
+        },
+        {
+            "cardholder": "Kyle Andrews",
+            "brand": "MasterCard",
+            "last4": "0073",
+            "expDate": "12/24"
+        }
+    ]
+}

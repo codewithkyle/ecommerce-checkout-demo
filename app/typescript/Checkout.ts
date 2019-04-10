@@ -6,17 +6,18 @@ export class Checkout{
     private _sections:  Array<HTMLElement>;
     private _sectionsContainer: HTMLElement;
     private _loginModal:    HTMLElement;
-    private _user:  IUser;
     private _step:  number;
 
     public el: HTMLElement;
+    public user: IUser;
 
     constructor(){
 
         this.el = document.body.querySelector('.js-checkout');
+        this.user = {};
+
         this._sectionsContainer = this.el.querySelector('.js-checkout-section-container');
         this._loginModal = document.body.querySelector('.js-login-modal');
-        this._user = {};
         this._step = 0;
         this._sections = [];
 
@@ -40,14 +41,6 @@ export class Checkout{
 
             new Address(shippingAddressSection, this);
         }
-    }
-
-    public set(key:string, value:string|number|boolean):void{
-        this._user[key] = value;
-    }
-
-    public get(key:string):any{
-        return this._user[key];
     }
 
     public next():void{

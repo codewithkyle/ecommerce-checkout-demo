@@ -1,0 +1,24 @@
+{
+    "options": [
+        {
+            "name": "Standard Shipping",
+            "estimatedDeliveryDate": "Wednesday, December 31st",
+            "cost": 8.5
+        },
+        {
+            "name": "Three-Day Shipping",
+            "estimatedDeliveryDate": "Monday, December 5th",
+            "cost": 32
+        },
+        {
+            "name": "Two-Day Shipping",
+            "estimatedDeliveryDate": "Sunday, December 4th",
+            "cost": 68.5
+        },
+        {
+            "name": "One-Day Shipping",
+            "estimatedDeliveryDate": "Saturday, December 3rd",
+            "cost": 233
+        }
+    ]
+}

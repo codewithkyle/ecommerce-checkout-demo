@@ -1,0 +1,16 @@
+{
+    "addresses": [
+        {
+            "fullName": "Kyle Andrews",
+            "addressLine1": "4247 Crooked Tree Rd SW",
+            "additionalAddressLines": [
+                "Apt 10"
+            ],
+            "city": "Wyoming",
+            "state": "MI",
+            "zip": 49519,
+            "country": "United States",
+            "phoneNumber": 6162282673
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+{
+    "success": false,
+    "errors": [
+        {
+            "id": "loginEmailAddress",
+            "message": "Email address is incorrect"
+        },
+        {
+            "id": "loginPassword",
+            "message": "Password is incorrect"
+        }
+    ]
+}

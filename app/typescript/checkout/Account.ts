@@ -28,21 +28,37 @@ export class Account{
      */
     private loginFormSubmit:EventListener = (e:Event)=>{
         e.preventDefault();
-        console.error('Server login verification is not implemented');
+        console.warn('Server login verification is not implemented');
         
         const email = <HTMLInputElement>this._loginForm.querySelector('#loginEmailAddress');
         const password = <HTMLInputElement>this._loginForm.querySelector('#loginPassword');
-        if(password.value === '1231q2'){
-            console.warn('Proceeding with fake information');
-            this.checkout.set('emailAddress', email.value);
+        if(password.value === '123'){
+            (async ()=>{
+                const request = await fetch(`${ window.location.origin }${ window.location.pathname }responses/success.json`);
+                const resonse = await request.text();
+                const user = await JSON.parse(resonse);
+                user.email = email.value;
+                user.isGuest = false;
+                this.checkout.user = user;
+                console.warn('Proceeding with fake user information');
+                this.checkout.next();
+            })();
+        }
+        else if(password.value === '1234'){
+            console.warn('Proceeding with fake guest information');
+            this.checkout.user.email = email.value;
+            this.checkout.user.isGuest = true;
             this.checkout.next();
         }else{
             // Builds a fake error response
-            const errorResponse:ILoginError ={
-                0:{
-                    inputId: 'loginPassword',
-                    errorMessage: 'Incorrect password'
-                }
+            const errorResponse:ILoginResponse ={
+                "success": false,
+                "errors": [
+                    {
+                        "id": "loginPassword",
+                        "message": "Incorrect password"
+                    }
+                ]
             }
             this.handleLoginErrors(errorResponse);
         }
@@ -78,12 +94,13 @@ export class Account{
         target.parentElement.classList.add('has-focus');
     }
 
-    private handleLoginErrors(errors:ILoginError):void{
-        for(let error in errors){
-            const inputEl = this._loginForm.querySelector(`#${ errors[error].inputId }`);
+    private handleLoginErrors(response:ILoginResponse):void{
+        for(let i = 0; i < response.errors.length; i++){
+            const error:ILoginError = response.errors[i];
+            const inputEl = this._loginForm.querySelector(`#${ error.id }`);
             inputEl.parentElement.classList.add('is-invalid');
             const errorEl = inputEl.parentElement.querySelector('.js-error-message');
-            errorEl.innerHTML = errors[error].errorMessage;
+            errorEl.innerHTML = error.message;
         }
     }
 }
