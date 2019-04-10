@@ -151,13 +151,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 class Account {
     constructor(modal, checkout) {
         /**
-         * Called when the user submits the account login form.
+         * Called when the `submit` event is fired on the login form.
          */
         this.loginFormSubmit = (e) => {
+            // Prevent the default form submission
             e.preventDefault();
+            // Temp warning, to be removed when the checkout is hooked up to craft
             console.warn('Server login verification is not implemented');
+            // Gets the Email and Password inputs
             const email = this._loginForm.querySelector('#loginEmailAddress');
             const password = this._loginForm.querySelector('#loginPassword');
+            // If the password is `123` fake a login
             if (password.value === '123') {
                 (() => __awaiter(this, void 0, void 0, function* () {
                     const request = yield fetch(`${window.location.origin}${window.location.pathname}responses/success.json`);
@@ -170,6 +174,7 @@ class Account {
                     this.checkout.next();
                 }))();
             }
+            // If the password is `1234` fake a guest login
             else if (password.value === '1234') {
                 console.warn('Proceeding with fake guest information');
                 this.checkout.user.email = email.value;
@@ -187,35 +192,48 @@ class Account {
                         }
                     ]
                 };
+                // Handle the login errors
                 this.handleLoginErrors(errorResponse);
             }
         };
         /**
-         * Called when an `HMLTInputElement` elements `blur` event is fired.
+         * Called when the `blur` event is fired on a input.
          */
         this.handleBlur = (e) => {
+            // Get the input that fired the event
             const target = e.currentTarget;
+            // Remove the `has-focus` status class
             target.parentElement.classList.remove('has-focus');
+            // Check if the value is blank
             if (target.value !== '') {
+                // If input has a value add the `has-value` status class
                 target.parentElement.classList.add('has-value');
             }
             else {
+                // If the input doesn't have a value remove the `has-value` status class
                 target.parentElement.classList.remove('has-value');
             }
+            // Check if the input is valid
             if (!target.validity.valid) {
+                // If invalid add the `is-invalid` status class
                 target.parentElement.classList.add('is-invalid');
+                // Get the error message element
                 const errorEl = target.parentElement.querySelector('.js-error-message');
+                // Add the validation message to the error
                 errorEl.innerHTML = target.validationMessage;
             }
             else {
+                // If valid remove the `is-invalid` status class
                 target.parentElement.classList.remove('is-invalid');
             }
         };
         /**
-         * Called with an `HTMLInputElement` elements `focus` event is fired.
+         * Called when the `focus` event is fired on an input.
          */
         this.handleFocus = (e) => {
+            // Get the input that the event was fired on
             const target = e.currentTarget;
+            // Set the `has-focus` status class
             target.parentElement.classList.add('has-focus');
         };
         this.el = modal;
@@ -224,20 +242,37 @@ class Account {
         this._loginForm = this.el.querySelector('.js-login-form');
         this.init();
     }
+    /**
+     * Called when the class is created.
+     */
     init() {
+        // Loop through all of the inputs
         this._inputs.forEach((input) => {
+            // Set the focus and blur event listeners
             input.addEventListener('focus', this.handleFocus);
             input.addEventListener('blur', this.handleBlur);
         });
+        // Set the form submit event listener
         this._loginForm.addEventListener('submit', this.loginFormSubmit);
     }
     ;
+    /**
+     * Called when the server couldn't validate the user.
+     * Displays custom error messages from the server.
+     * @param response - ILoginResponse object
+     */
     handleLoginErrors(response) {
+        // Loop through all of the custom errors
         for (let i = 0; i < response.errors.length; i++) {
+            // Get the `ILoginError` object from the response
             const error = response.errors[i];
+            // Get the input element that caused the error
             const inputEl = this._loginForm.querySelector(`#${error.id}`);
+            // Add the `is-invalid` status class
             inputEl.parentElement.classList.add('is-invalid');
+            // Get the error message element
             const errorEl = inputEl.parentElement.querySelector('.js-error-message');
+            // Set the custom error message
             errorEl.innerHTML = error.message;
         }
     }
