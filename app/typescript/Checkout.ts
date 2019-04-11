@@ -34,6 +34,8 @@ export class Checkout{
     }
 
     private manageNextStep():void{
+        console.log(`Moving to step ${ this._step }`);
+
         // User moved to the address input step
         if(this._step === 1){
 
@@ -48,12 +50,29 @@ export class Checkout{
 
             // Get the shipping address section
             const shippingAddressSection = <HTMLElement>this.el.querySelector('[data-section="Shipping Address"]');
+            
+            this._sections.push(shippingAddressSection);
+            
+            shippingAddressSection.classList.add('is-current-step');
 
             // Make is visible
             shippingAddressSection.classList.add('is-visible');
 
             // Start the shipping address logic
             new Address(shippingAddressSection, this);
+        }
+        // User moved to the shipping option selection step
+        else if(this._step === 2){
+            
+            // Clear the `is-current-step` class from all sections
+            this._sections.forEach((section)=>{
+                section.classList.remove('is-current-step');
+            });
+
+            // Get the shipping address section
+            const shippingOptionSection = <HTMLElement>this.el.querySelector('[data-section="Shipping Options"]');
+            this._sections.push(shippingOptionSection);
+            shippingOptionSection.classList.add('is-current-step', 'is-visible');
         }
     }
 

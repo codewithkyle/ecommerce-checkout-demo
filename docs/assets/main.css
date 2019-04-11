@@ -244,7 +244,6 @@
     max-width: 756px;
     margin-right: auto;
     display: block;
-    max-height: calc(100vh - 96px);
     padding-top: 64px;
     margin-bottom: 33vh; }
     .c-checkout .c-checkout_sections .c-checkout_section {
@@ -252,11 +251,16 @@
       padding-bottom: 48px;
       width: 100%;
       opacity: 0;
-      transform: translateY(-25px);
-      transition: opacity 150ms cubic-bezier(0, 0, 0.2, 1), transform 150ms cubic-bezier(0, 0, 0.2, 1); }
+      transform: translateY(25px);
+      transition: opacity 150ms cubic-bezier(0, 0, 0.2, 1), transform 150ms cubic-bezier(0, 0, 0.2, 1);
+      pointer-events: none; }
       .c-checkout .c-checkout_sections .c-checkout_section.is-visible {
+        pointer-events: all;
         transform: translateY(0);
         opacity: 1; }
+      .c-checkout .c-checkout_sections .c-checkout_section.is-current-step .c-checkout_section_buttons {
+        opacity: 1;
+        pointer-events: all; }
       .c-checkout .c-checkout_sections .c-checkout_section h1 {
         position: absolute;
         top: 0;
@@ -279,7 +283,10 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        width: 100%; }
+        width: 100%;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
 
 .c-checkout_summary {
   display: inline-block;

@@ -20,7 +20,6 @@
         max-width: 756px;
         margin-right: auto;
         display: block;
-        max-height: calc(100vh - 96px);
         padding-top: 64px;
         margin-bottom: 33vh;
 
@@ -29,12 +28,21 @@
             padding-bottom: 48px;
             width: 100%;
             opacity: 0;
-            transform: translateY(-25px);
+            transform: translateY(25px);
             transition: opacity 150ms $ease-in, transform 150ms $ease-in;
+            pointer-events: none;
 
             &.is-visible{
+                pointer-events: all;
                 transform: translateY(0);
                 opacity: 1;
+            }
+
+            &.is-current-step{
+                .c-checkout_section_buttons{
+                    opacity: 1;
+                    pointer-events: all;
+                }
             }
 
             h1{
@@ -64,6 +72,9 @@
                 justify-content: space-between;
                 align-items: center;
                 width: 100%;
+                opacity: 0;
+                pointer-events: none;
+                transition: all 150ms $ease;
             }
         }
     }

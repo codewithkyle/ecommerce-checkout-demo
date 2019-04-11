@@ -111,6 +111,7 @@ class Checkout {
         new Account_1.Account(this._loginModal, this);
     }
     manageNextStep() {
+        console.log(`Moving to step ${this._step}`);
         // User moved to the address input step
         if (this._step === 1) {
             // Display the sections
@@ -121,10 +122,23 @@ class Checkout {
             this._loginModal.classList.add('is-hidden');
             // Get the shipping address section
             const shippingAddressSection = this.el.querySelector('[data-section="Shipping Address"]');
+            this._sections.push(shippingAddressSection);
+            shippingAddressSection.classList.add('is-current-step');
             // Make is visible
             shippingAddressSection.classList.add('is-visible');
             // Start the shipping address logic
             new Address_1.Address(shippingAddressSection, this);
+        }
+        // User moved to the shipping option selection step
+        else if (this._step === 2) {
+            // Clear the `is-current-step` class from all sections
+            this._sections.forEach((section) => {
+                section.classList.remove('is-current-step');
+            });
+            // Get the shipping address section
+            const shippingOptionSection = this.el.querySelector('[data-section="Shipping Options"]');
+            this._sections.push(shippingOptionSection);
+            shippingOptionSection.classList.add('is-current-step', 'is-visible');
         }
     }
     /**
@@ -496,7 +510,9 @@ class Address {
      * Called when we need to validate the shipping options.
      */
     validate() {
+        // Create an empty address object
         let selectedAddress = null;
+        // Assume the user isn't using a saved address
         let usingPreviousAddress = false;
         // Check if the user is logged in
         if (!this.checkout.user.isGuest) {
@@ -542,6 +558,7 @@ class Address {
             });
             // If the inputs are valid get the address information
             if (allInputsAreValid) {
+                // Get all the form inputs
                 const labelInput = this._addressForm.querySelector('input#label');
                 const fullName = this._addressForm.querySelector('input#fullName');
                 const addressLine1 = this._addressForm.querySelector('input#addressLine1');
@@ -550,12 +567,14 @@ class Address {
                 const zip = this._addressForm.querySelector('input#zip');
                 const country = this._addressForm.querySelector('input#country');
                 const phoneNumber = this._addressForm.querySelector('input#phoneNumber');
+                // Get an array of strings based on the additional input values
                 const additionalAddressLines = [];
                 this._additionalAddressLineInputs.forEach((input) => {
                     if (input.value !== '') {
                         additionalAddressLines.push(input.value);
                     }
                 });
+                // Build the selected address object
                 selectedAddress = {
                     label: labelInput.value,
                     fullName: fullName.value,
@@ -569,8 +588,11 @@ class Address {
                 };
             }
         }
-        this.checkout.user.selectedAddress = selectedAddress;
-        this.checkout.next();
+        // Make sure the selected address object isn't null
+        if (selectedAddress !== null) {
+            this.checkout.user.selectedAddress = selectedAddress;
+            this.checkout.next();
+        }
     }
 }
 Address.SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="33.5" viewBox="0 0 23.761 33.5"><g class="cls-1" transform="translate(-38.5 -27)"><path id="Path_10" data-name="Path 10" class="cls-2" d="M46.055,76.082C42.482,77.092,40,79.314,40,81.893c0,3.53,4.648,6.39,10.381,6.39s10.381-2.861,10.381-6.39c0-2.647-2.614-4.918-6.34-5.888" transform="translate(0 -29.284)"/><path id="Path_9" data-name="Path 9" class="cls-3" d="M50.381,27A10.272,10.272,0,0,0,40,37.16c0,3.763,1.3,4.939,8.179,15.738a2.627,2.627,0,0,0,4.4,0c6.885-10.8,8.179-11.976,8.179-15.738A10.272,10.272,0,0,0,50.381,27Zm0,24.553C43.491,40.741,42.6,40.059,42.6,37.16a7.787,7.787,0,0,1,15.571,0C58.166,40.046,57.346,40.622,50.381,51.553ZM46.055,37.16a4.326,4.326,0,1,1,4.325,4.233A4.28,4.28,0,0,1,46.055,37.16Z"/></g></svg>';

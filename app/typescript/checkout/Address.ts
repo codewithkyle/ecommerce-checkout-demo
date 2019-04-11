@@ -147,7 +147,10 @@ export class Address{
      */
     private validate():void{
         
+        // Create an empty address object
         let selectedAddress:IAddress = null;
+
+        // Assume the user isn't using a saved address
         let usingPreviousAddress = false;
 
         // Check if the user is logged in
@@ -209,6 +212,7 @@ export class Address{
             // If the inputs are valid get the address information
             if(allInputsAreValid){
 
+                // Get all the form inputs
                 const labelInput = <HTMLInputElement>this._addressForm.querySelector('input#label');
                 const fullName = <HTMLInputElement>this._addressForm.querySelector('input#fullName');
                 const addressLine1 = <HTMLInputElement>this._addressForm.querySelector('input#addressLine1');
@@ -218,6 +222,7 @@ export class Address{
                 const country = <HTMLInputElement>this._addressForm.querySelector('input#country');
                 const phoneNumber = <HTMLInputElement>this._addressForm.querySelector('input#phoneNumber');
 
+                // Get an array of strings based on the additional input values
                 const additionalAddressLines:Array<string> = [];
                 this._additionalAddressLineInputs.forEach((input)=>{
                     if(input.value !== ''){
@@ -225,6 +230,7 @@ export class Address{
                     }
                 });
 
+                // Build the selected address object
                 selectedAddress = {
                     label: labelInput.value,
                     fullName: fullName.value,
@@ -239,8 +245,11 @@ export class Address{
             }
         }
 
-        this.checkout.user.selectedAddress = selectedAddress;
-        this.checkout.next();
+        // Make sure the selected address object isn't null
+        if(selectedAddress !== null){
+            this.checkout.user.selectedAddress = selectedAddress;
+            this.checkout.next();
+        }
     }
 
     /**
