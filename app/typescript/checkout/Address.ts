@@ -18,6 +18,7 @@ export class Address{
     private _addressFormSelects: Array<HTMLSelectElement>;
     private _additionalAddressLineInputs: Array<HTMLInputElement>;
     private _phoneNumberInput: HTMLInputElement;
+    private _formWrapper: HTMLElement;
     
     private _countrySelect: HTMLSelectElement;
     private _phoneFormater: AsYouType;
@@ -31,6 +32,7 @@ export class Address{
         this.checkout = checkout;
 
         this._addressCardsContainer = this.el.querySelector('.js-address-cards');
+        this._formWrapper = this.el.querySelector('.js-new-address-form');
         this._addressCards = [];
         this._additionalLine = 0;
         this._additionalAddressLinesWrapper = this.el.querySelector('.js-additional-address-lines');
@@ -61,9 +63,10 @@ export class Address{
 
         // Check if the user is logged in
         if(!this.checkout.user.isGuest){
-            
             // Try to create the address cards
             this.createAddressCards();
+        }else{
+            this.showForm();
         }
 
         // Set the event listener for the "+ Address Line" button
@@ -158,7 +161,30 @@ export class Address{
                 // Give the card the toggle click event listener
                 newAddressCard.addEventListener('click', this.toggleAddressCard);
             };
+
+            const addAddressCard = document.createElement('div');
+            addAddressCard.classList.add('o-address-cards_new');
+            addAddressCard.innerHTML = '<span>New Address</span>';
+            this._addressCardsContainer.appendChild(addAddressCard);
+            addAddressCard.addEventListener('click', ()=>{
+                
+                addAddressCard.classList.add('is-hidden');
+
+                // Show the new address form
+                this.showForm();
+
+                // Clear all the `is-selected` status classes from the address cards
+                this._addressCards.forEach((card)=>{
+                    card.classList.remove('is-selected');
+                });
+            });
+        }else{
+            this.showForm();
         }
+    }
+
+    private showForm():void{
+        this._formWrapper.classList.add('is-visible');
     }
 
     /**

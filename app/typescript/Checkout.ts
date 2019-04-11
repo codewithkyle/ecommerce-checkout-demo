@@ -34,7 +34,11 @@ export class Checkout{
     }
 
     private manageNextStep():void{
+        console.group();
         console.log(`Moving to step ${ this._step }`);
+        console.log('Current User Object: ', this.user);
+        console.groupEnd();
+
 
         // User moved to the address input step
         if(this._step === 1){

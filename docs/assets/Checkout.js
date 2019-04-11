@@ -111,7 +111,10 @@ class Checkout {
         new Account_1.Account(this._loginModal, this);
     }
     manageNextStep() {
+        console.group();
         console.log(`Moving to step ${this._step}`);
+        console.log('Current User Object: ', this.user);
+        console.groupEnd();
         // User moved to the address input step
         if (this._step === 1) {
             // Display the sections
@@ -428,6 +431,7 @@ class Address {
         this.el = modal;
         this.checkout = checkout;
         this._addressCardsContainer = this.el.querySelector('.js-address-cards');
+        this._formWrapper = this.el.querySelector('.js-new-address-form');
         this._addressCards = [];
         this._additionalLine = 0;
         this._additionalAddressLinesWrapper = this.el.querySelector('.js-additional-address-lines');
@@ -454,6 +458,9 @@ class Address {
         if (!this.checkout.user.isGuest) {
             // Try to create the address cards
             this.createAddressCards();
+        }
+        else {
+            this.showForm();
         }
         // Set the event listener for the "+ Address Line" button
         this._addAddressLineButton.addEventListener('click', this.addNewAddressLine);
@@ -529,7 +536,26 @@ class Address {
                 newAddressCard.addEventListener('click', this.toggleAddressCard);
             }
             ;
+            const addAddressCard = document.createElement('div');
+            addAddressCard.classList.add('o-address-cards_new');
+            addAddressCard.innerHTML = '<span>New Address</span>';
+            this._addressCardsContainer.appendChild(addAddressCard);
+            addAddressCard.addEventListener('click', () => {
+                addAddressCard.classList.add('is-hidden');
+                // Show the new address form
+                this.showForm();
+                // Clear all the `is-selected` status classes from the address cards
+                this._addressCards.forEach((card) => {
+                    card.classList.remove('is-selected');
+                });
+            });
         }
+        else {
+            this.showForm();
+        }
+    }
+    showForm() {
+        this._formWrapper.classList.add('is-visible');
     }
     /**
      * Called when we need to validate the shipping options.
