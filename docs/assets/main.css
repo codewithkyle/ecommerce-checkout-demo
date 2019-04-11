@@ -2,14 +2,17 @@
   display: inline-block;
   width: 100%;
   height: 48px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   transition: margin-bottom 150ms cubic-bezier(0.4, 0, 0.2, 1);
   will-change: margin-bottom; }
-  .o-checkout-input:hover input {
+  .o-checkout-input:hover input,
+  .o-checkout-input:hover select {
     border-color: rgba(161, 162, 166, 0.6); }
-  .o-checkout-input:hover label {
+  .o-checkout-input:hover label,
+  .o-checkout-input:hover svg {
     color: rgba(161, 162, 166, 0.6) !important; }
-  .o-checkout-input.has-focus input {
+  .o-checkout-input.has-focus input,
+  .o-checkout-input.has-focus select {
     border-color: rgba(104, 130, 191, 0.87);
     color: rgba(56, 41, 62, 0.87); }
   .o-checkout-input.has-focus label {
@@ -17,16 +20,19 @@
     font-size: 13px;
     transform: translateY(-8px);
     transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1), transform 150ms cubic-bezier(0, 0, 0.2, 1), font-size 150ms cubic-bezier(0, 0, 0.2, 1); }
+  .o-checkout-input.has-focus svg {
+    color: rgba(104, 130, 191, 0.87) !important; }
   .o-checkout-input.has-value label {
     color: #E1E6F0;
     font-size: 13px;
     transform: translateY(-8px);
     transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1), transform 150ms cubic-bezier(0, 0, 0.2, 1), font-size 150ms cubic-bezier(0, 0, 0.2, 1); }
   .o-checkout-input.is-invalid {
-    margin-bottom: 48px; }
+    margin-bottom: 32px; }
     .o-checkout-input.is-invalid .o-checkout-input_message {
       opacity: 1; }
-    .o-checkout-input.is-invalid input {
+    .o-checkout-input.is-invalid input,
+    .o-checkout-input.is-invalid select {
       border-color: rgba(255, 73, 73, 0.87);
       color: rgba(56, 41, 62, 0.87); }
     .o-checkout-input.is-invalid label {
@@ -34,32 +40,51 @@
       font-size: 13px;
       transform: translateY(-8px);
       transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1), transform 150ms cubic-bezier(0, 0, 0.2, 1), font-size 150ms cubic-bezier(0, 0, 0.2, 1); }
+    .o-checkout-input.is-invalid svg {
+      color: rgba(255, 73, 73, 0.87) !important; }
   .o-checkout-input .o-checkout-input_message {
     font-size: 13px;
     position: absolute;
     top: 100%;
-    transform: translateY(8px);
+    transform: translateY(6px);
     left: 4px;
     color: rgba(255, 73, 73, 0.87);
     opacity: 0;
     transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1); }
-  .o-checkout-input input {
+  .o-checkout-input input,
+  .o-checkout-input select {
     font-size: 16px;
     color: rgba(56, 41, 62, 0.6);
     line-height: 48px;
+    height: 48px;
+    background-color: transparent;
     width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
     border: 2px solid #E1E6F0;
     border-radius: 4px;
     padding: 0 16px;
-    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); }
+    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    appearance: none;
+    -webkit-appearance: none; }
+    .o-checkout-input input::-ms-expand,
+    .o-checkout-input select::-ms-expand {
+      display: none; }
+  .o-checkout-input svg {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 8px;
+    color: #E1E6F0;
+    transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1); }
   .o-checkout-input label {
     font-size: 16px;
     position: absolute;
     top: 0;
     left: 12px;
-    transform: translateY(14px);
+    transform: translateY(12px);
     color: #E1E6F0;
     transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1), transform 150ms cubic-bezier(0.4, 0, 0.6, 1), font-size 150ms cubic-bezier(0.4, 0, 0.6, 1);
     user-select: none;

@@ -315,6 +315,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const libphonenumber_js_1 = __webpack_require__(3);
 class Address {
     constructor(modal, checkout) {
+        this.updateCountryCode = (e) => {
+            if (this._countrySelect.value !== '' && this._countryCode !== this._countrySelect.value) {
+                this._countryCode = this._countrySelect.value;
+                // @ts-ignore
+                this._phoneFormater = new libphonenumber_js_1.AsYouType(this._countryCode);
+            }
+        };
+        this.liveFormatPhoneNumber = (e) => {
+            this._phoneFormater.reset();
+            const currentInput = this._phoneNumberInput.value;
+            const formattedInput = this._phoneFormater.input(currentInput);
+            this._phoneNumberInput.value = formattedInput;
+        };
         /**
          * Called when the `click` event is fired on this sections continue button.
          */
@@ -421,7 +434,13 @@ class Address {
         this._addAddressLineButton = this.el.querySelector('.js-add-new-address-line');
         this._addressForm = this.el.querySelector('form');
         this._addressFormInputs = Array.from(this.el.querySelectorAll('input'));
+        this._addressFormSelects = Array.from(this.el.querySelectorAll('select'));
         this._additionalAddressLineInputs = [];
+        this._phoneNumberInput = this.el.querySelector('input#phoneNumber');
+        this._countrySelect = this.el.querySelector('select#country');
+        this._countryCode = (this._countrySelect.value !== '') ? this._countrySelect.value : 'US';
+        // @ts-ignore
+        this._phoneFormater = new libphonenumber_js_1.AsYouType(this._countryCode);
         this._continueButton = this.el.querySelector('.js-continue-button');
         this.init();
     }
@@ -444,7 +463,13 @@ class Address {
             input.addEventListener('blur', this.handleBlur);
             input.addEventListener('focus', this.handleFocus);
         });
+        this._addressFormSelects.forEach((select) => {
+            select.addEventListener('blur', this.handleBlur);
+            select.addEventListener('focus', this.handleFocus);
+        });
         this._continueButton.addEventListener('click', this.continueButtonClicked);
+        this._countrySelect.addEventListener('change', this.updateCountryCode);
+        this._phoneNumberInput.addEventListener('keyup', this.liveFormatPhoneNumber);
     }
     /**
      * Generate address cards from the `addresses` array returned by the successful login.
@@ -536,6 +561,19 @@ class Address {
                         input.parentElement.classList.remove('has-value');
                     }
                 });
+                this._addressFormSelects.forEach((select) => {
+                    // Remove invalid status class
+                    select.parentElement.classList.remove('is-invalid');
+                    // Check if the inputs value is empty
+                    if (select.value !== '') {
+                        // Value isn't empty, add the `has-value` status class
+                        select.parentElement.classList.add('has-value');
+                    }
+                    else {
+                        // Value is empty, remove the `has-value` status class
+                        select.parentElement.classList.remove('has-value');
+                    }
+                });
             }
         }
         // If we don't have an address try the form
@@ -556,6 +594,20 @@ class Address {
                     errorEl.innerHTML = input.validationMessage;
                 }
             });
+            // Loop through all of the new address form select inputs
+            this._addressFormSelects.forEach((select) => {
+                // Check if the input is valid
+                if (!select.validity.valid) {
+                    // We found an invalid input
+                    allInputsAreValid = false;
+                    // The input is invalid, add the `is-invalid` status class
+                    select.parentElement.classList.add('is-invalid');
+                    // Get the error message element
+                    const errorEl = select.parentElement.querySelector('.js-error-message');
+                    // Update the message with the validation error message
+                    errorEl.innerHTML = select.validationMessage;
+                }
+            });
             // If the inputs are valid get the address information
             if (allInputsAreValid) {
                 // Get all the form inputs
@@ -563,9 +615,9 @@ class Address {
                 const fullName = this._addressForm.querySelector('input#fullName');
                 const addressLine1 = this._addressForm.querySelector('input#addressLine1');
                 const city = this._addressForm.querySelector('input#city');
-                const state = this._addressForm.querySelector('input#state');
+                const state = this._addressForm.querySelector('select#state');
                 const zip = this._addressForm.querySelector('input#zip');
-                const country = this._addressForm.querySelector('input#country');
+                const country = this._addressForm.querySelector('select#country');
                 const phoneNumber = this._addressForm.querySelector('input#phoneNumber');
                 // Get an array of strings based on the additional input values
                 const additionalAddressLines = [];
