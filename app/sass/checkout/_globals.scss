@@ -270,3 +270,84 @@
         }
     }
 }
+
+.o-checkout-popup{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    background-color: rgba($off-black, 0);
+    animation: popupFade 150ms $ease forwards;
+
+    .o-checkout-popup_message{
+        background-color: $white;
+        border-radius: 4px;
+        padding: 16px 8px 8px 16px;
+        min-width: 256px;
+        box-shadow: 0 2px 8px rgba($off-black, 0.3);
+        transform: scale(0.87);
+        opacity: 0;
+        animation: messagePopup 150ms $ease-in forwards;
+
+        h3{
+            display: block;
+            color: $font;
+            opacity: 0.87;
+            font-size: 16px;
+            line-height: 25px;
+            font-weight: 400;
+            margin-bottom: 16px;
+        }
+
+        button{
+            float: right;
+            margin-left: 8px;
+            text-transform: uppercase;
+            font-size: 14px;
+            border-radius: 4px;
+            background-color: transparent;
+            line-height: 36px;
+            padding: 0 8px;
+            color: $font;
+            transition: all 150ms $ease;
+            cursor: pointer;
+
+            @include hover{
+                background-color: rgba($primary, 0.05);
+            }
+
+            &.-delete{
+                color: $error;
+                
+                @include hover{
+                    background-color: rgba($error, 0.05);
+                }
+            }
+        }
+    }
+}
+
+@keyframes popupFade{
+    from{
+        background-color: rgba($off-black, 0);
+    }
+    to{
+        background-color: rgba($off-black, 0.6);
+    }
+}
+
+@keyframes messagePopup{
+    from{
+        transform: scale(0.87);
+        opacity: 0;
+    }
+    to{
+        transform: scale(1);
+        opacity: 1;
+    }
+}

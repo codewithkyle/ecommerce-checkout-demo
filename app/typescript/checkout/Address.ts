@@ -4,6 +4,7 @@ export class Address{
 
     public static SVG:string = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="33.5" viewBox="0 0 23.761 33.5"><g class="cls-1" transform="translate(-38.5 -27)"><path id="Path_10" data-name="Path 10" class="cls-2" d="M46.055,76.082C42.482,77.092,40,79.314,40,81.893c0,3.53,4.648,6.39,10.381,6.39s10.381-2.861,10.381-6.39c0-2.647-2.614-4.918-6.34-5.888" transform="translate(0 -29.284)"/><path id="Path_9" data-name="Path 9" class="cls-3" d="M50.381,27A10.272,10.272,0,0,0,40,37.16c0,3.763,1.3,4.939,8.179,15.738a2.627,2.627,0,0,0,4.4,0c6.885-10.8,8.179-11.976,8.179-15.738A10.272,10.272,0,0,0,50.381,27Zm0,24.553C43.491,40.741,42.6,40.059,42.6,37.16a7.787,7.787,0,0,1,15.571,0C58.166,40.046,57.346,40.622,50.381,51.553ZM46.055,37.16a4.326,4.326,0,1,1,4.325,4.233A4.28,4.28,0,0,1,46.055,37.16Z"/></g></svg>';
     public static NEW_SVG:string = '<svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="map-marker-plus" class="svg-inline--fa fa-map-marker-plus fa-w-12" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M192 0C86.4 0 0 86.4 0 192c0 76.8 25.6 99.2 172.8 310.4 4.8 6.4 12 9.6 19.2 9.6 7.2 0 14.4-3.2 19.2-9.6C358.4 291.2 384 268.8 384 192 384 86.4 297.6 0 192 0zm0 446.09c-14.41-20.56-27.51-39.13-39.41-56C58.35 256.48 48 240.2 48 192c0-79.4 64.6-144 144-144s144 64.6 144 144c0 48.2-10.35 64.48-104.59 198.09-11.9 16.87-25 35.44-39.41 56zM272 168h-56v-56c0-8.84-7.16-16-16-16h-16c-8.84 0-16 7.16-16 16v56h-56c-8.84 0-16 7.16-16 16v16c0 8.84 7.16 16 16 16h56v56c0 8.84 7.16 16 16 16h16c8.84 0 16-7.16 16-16v-56h56c8.84 0 16-7.16 16-16v-16c0-8.84-7.16-16-16-16z"></path></svg>';
+    public static TRASH_SVG:string = '<svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="trash-alt" class="svg-inline--fa fa-trash-alt fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M268 416h24a12 12 0 0 0 12-12V188a12 12 0 0 0-12-12h-24a12 12 0 0 0-12 12v216a12 12 0 0 0 12 12zM432 80h-82.41l-34-56.7A48 48 0 0 0 274.41 0H173.59a48 48 0 0 0-41.16 23.3L98.41 80H16A16 16 0 0 0 0 96v16a16 16 0 0 0 16 16h16v336a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128h16a16 16 0 0 0 16-16V96a16 16 0 0 0-16-16zM171.84 50.91A6 6 0 0 1 177 48h94a6 6 0 0 1 5.15 2.91L293.61 80H154.39zM368 464H80V128h288zm-212-48h24a12 12 0 0 0 12-12V188a12 12 0 0 0-12-12h-24a12 12 0 0 0-12 12v216a12 12 0 0 0 12 12z"></path></svg>';
 
     public el:  HTMLElement;
     public checkout: Checkout;
@@ -25,6 +26,9 @@ export class Address{
     private _countryCode: string;
 
     private _continueButton: HTMLButtonElement;
+
+    private _cardInLimbo: HTMLElement;
+    private _popupModal: HTMLElement;
 
     constructor(modal:HTMLElement, checkout:Checkout){
 
@@ -49,6 +53,9 @@ export class Address{
         this._phoneFormater = new AsYouType(this._countryCode);
 
         this._continueButton = this.el.querySelector('.js-continue-button');
+
+        this._cardInLimbo = null;
+        this._popupModal = null;
 
         this.init();
     }
@@ -149,6 +156,12 @@ export class Address{
                     addressDetails.innerHTML += `<li>${ address.phoneNumber }</li>`;
                 }
 
+                // Add delete button
+                const deleteButton = document.createElement('button');
+                deleteButton.innerHTML = Address.TRASH_SVG;
+                deleteButton.addEventListener('click', this.deleteAddress);
+                newAddressCard.appendChild(deleteButton);
+
                 // Append the address details to the card
                 newAddressCard.appendChild(addressDetails);
 
@@ -183,6 +196,9 @@ export class Address{
         }
     }
 
+    /**
+     * Add the `is-visible` class to the form wrapper.
+     */
     private showForm():void{
         this._formWrapper.classList.add('is-visible');
     }
@@ -332,18 +348,90 @@ export class Address{
         }
     }
 
+    /**
+     * Called when the user clicks the delete button on an address card.
+     */
+    private deleteAddress:EventListener = (e:Event)=>{
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        const target = <HTMLElement>e.currentTarget;
+        this._cardInLimbo = target.parentElement;
+
+        this._popupModal = document.createElement('div');
+        this._popupModal.classList.add('o-checkout-popup');
+        document.body.appendChild(this._popupModal);
+
+        const popupMessage = document.createElement('div');
+        popupMessage.classList.add('o-checkout-popup_message');
+        popupMessage.innerHTML += '<h3>Delete address?</h3>';
+
+        const deleteButton = document.createElement('button');
+        deleteButton.classList.add('-delete');
+        deleteButton.innerHTML = 'Delete';
+        
+        const cancelButton = document.createElement('button');
+        cancelButton.innerHTML = 'Cancel';
+
+        popupMessage.appendChild(deleteButton);
+        popupMessage.appendChild(cancelButton);
+
+        cancelButton.addEventListener('click', this.cancelDelete);
+        deleteButton.addEventListener('click', this.confirmDelete);
+
+        this._popupModal.appendChild(popupMessage);
+    }
+
+    private confirmDelete:EventListener = (e:Event)=>{
+        console.warn('Not currently sending card delete action to the server');
+        document.body.removeChild(this._popupModal);
+        const index = this._addressCards.indexOf(this._cardInLimbo);
+        this._addressCards.splice(index, 1);
+        this._addressCardsContainer.removeChild(this._cardInLimbo);
+
+        if(this._addressCards.length === 0){
+            const addressModal = this.el.querySelector('.js-modal');
+            addressModal.classList.remove('has-addresses');
+            this.showForm();
+        }
+    }
+
+    private cancelDelete:EventListener = (e:Event)=>{
+        this._cardInLimbo = null;
+        document.body.removeChild(this._popupModal);
+    }
+
+    /**
+     * Called when the user switches their country.
+     */
     private updateCountryCode:EventListener = (e:Event)=>{
+        
+        // If the user seletes a country that isn't the current country code
         if(this._countrySelect.value !== '' && this._countryCode !== this._countrySelect.value){
+            
+            // Get the new value
             this._countryCode = this._countrySelect.value;
+
+            // Pass the value to `AsYouType` for the phone number formatter
             // @ts-ignore
             this._phoneFormater = new AsYouType(this._countryCode);
         }
     }
 
+    /**
+     * Called when the `keyup` event is fired on the `#phoneNumber` input.
+     */
     private liveFormatPhoneNumber:EventListener = (e:Event)=>{
+        
+        // Reset the formatter
         this._phoneFormater.reset();
+
+        // Get the current input
         const currentInput = this._phoneNumberInput.value;
+
+        // Format the input using `AsYouType`
         const formattedInput = this._phoneFormater.input(currentInput);
+
+        // Set the value to the new formatted value
         this._phoneNumberInput.value = formattedInput;
     }
 

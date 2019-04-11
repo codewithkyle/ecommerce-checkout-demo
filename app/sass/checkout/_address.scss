@@ -2,6 +2,12 @@
     padding-bottom: 0 !important;
 
     &.has-addresses{
+        
+        .o-address-cards{
+            height: auto;
+            overflow: auto;
+        }
+
         .o-address-form{
             margin-top: 16px;
 
@@ -16,6 +22,8 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 16px;
+        height: 0;
+    overflow: hidden;
 
         .o-address-cards_card{
             display: inline-block;
@@ -90,6 +98,50 @@
                         color: $font;
                         transform: translateY(-2px);
                         opacity: 0.87;
+                    }
+                }
+            }
+
+            button{
+                width: 14px;
+                height: 14px;
+                position: absolute;
+                top: 16px;
+                right: 16px;
+                color: $slate;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 100;
+                cursor: pointer;
+                transition: color 150ms $ease;
+
+                svg{
+                    width: 14px;
+                    height: 14px;
+                    position: relative;
+                }
+
+                &::before{
+                    display: inline-block;
+                    transform: scale(0);
+                    opacity: 0;
+                    content: "";
+                    background-color: $primary;
+                    position: absolute;
+                    width: 24px;
+                    height: 24px;
+                    border-radius: 100%;
+                    transition: all 150ms $ease-sharp;
+                }
+
+                @include hover{
+                    color: $gray;
+
+                    &:before{
+                        transform: scale(1);
+                        opacity: 0.05;
+                        transition: all 150ms $ease-in;
                     }
                 }
             }
