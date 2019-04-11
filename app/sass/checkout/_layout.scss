@@ -18,16 +18,11 @@
     .c-checkout_sections{
         width: 100%;
         max-width: 756px;
-        margin-right: 32px;
-        vertical-align: top;
-        order: 1;
-        display: inline-block;
-        overflow: hidden;
-        overflow-y: auto;
-        scroll-behavior: smooth;
+        margin-right: auto;
+        display: block;
         max-height: calc(100vh - 96px);
         padding-top: 64px;
-        padding-bottom: 33vh;
+        margin-bottom: 33vh;
 
         .c-checkout_section{
             padding-top: 49px;
@@ -59,6 +54,16 @@
                 box-shadow: 0 2px 4px rgba($cool-black, 0.1);
                 border-top: 8px solid $primary;
                 padding: 16px;
+            }
+            
+            .c-checkout_section_buttons{
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
             }
         }
     }

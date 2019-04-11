@@ -17,6 +17,8 @@ export class Address{
     private _addressFormInputs: Array<HTMLInputElement>;
     private _additionalAddressLineInputs: Array<HTMLInputElement>;
 
+    private _continueButton: HTMLButtonElement;
+
     constructor(modal:HTMLElement, checkout:Checkout){
 
         this.el = modal;
@@ -30,6 +32,8 @@ export class Address{
         this._addressForm = this.el.querySelector('form');
         this._addressFormInputs = Array.from(this.el.querySelectorAll('input'));
         this._additionalAddressLineInputs = [];
+
+        this._continueButton = this.el.querySelector('.js-continue-button');
 
         this.init();
     }
@@ -59,6 +63,8 @@ export class Address{
             input.addEventListener('blur', this.handleBlur);
             input.addEventListener('focus', this.handleFocus);
         });
+
+        this._continueButton.addEventListener('click', this.continueButtonClicked);
     }
 
     /**
@@ -73,11 +79,14 @@ export class Address{
             addressModal.classList.add('has-addresses');
 
             // If the user has saved addresses loop through them
-            this.checkout.user.addresses.forEach((address:IAddress)=>{
+            for(let i = 0; i < this.checkout.user.addresses.length; i++){
                 
+                const address = this.checkout.user.addresses[i];
+
                 // Create a new address card element
                 const newAddressCard = document.createElement('div');
                 newAddressCard.classList.add('o-address-cards_card', 'js-address-card');
+                newAddressCard.dataset.id = `${ i }`;
 
                 // Add the static address SVG
                 newAddressCard.innerHTML += Address.SVG;
@@ -129,8 +138,116 @@ export class Address{
 
                 // Give the card the toggle click event listener
                 newAddressCard.addEventListener('click', this.toggleAddressCard);
-            });
+            };
         }
+    }
+
+    /**
+     * Called when we need to validate the shipping options.
+     */
+    private validate():void{
+        
+        let selectedAddress:IAddress = null;
+        let usingPreviousAddress = false;
+
+        // Check if the user is logged in
+        if(!this.checkout.user.isGuest){
+            
+            // Get the selected address card
+            const selectedAddressCard = <HTMLElement>this.el.querySelector('.js-address-card.is-selected');
+
+            // Check if a address card is selected
+            if(selectedAddressCard){
+
+                // Set the selected address details
+                selectedAddress = this.checkout.user.addresses[parseInt(selectedAddressCard.dataset.id)];
+                usingPreviousAddress = true;
+
+                this._addressFormInputs.forEach((input)=>{
+                    
+                    // Remove invalid status class
+                    input.parentElement.classList.remove('is-invalid');
+                    
+                    // Check if the inputs value is empty
+                    if(input.value !== ''){
+                        // Value isn't empty, add the `has-value` status class
+                        input.parentElement.classList.add('has-value');
+                    }else{
+                        // Value is empty, remove the `has-value` status class
+                        input.parentElement.classList.remove('has-value');
+                    }
+                });
+            }
+        }
+
+        // If we don't have an address try the form
+        if(!usingPreviousAddress){
+            
+            // Assume the inputs are valid
+            let allInputsAreValid = true;
+
+            // Loop through all of the new address form inputs
+            this._addressFormInputs.forEach((input)=>{
+                
+                // Check if the input is valid
+                if(!input.validity.valid){
+                    
+                    // We found an invalid input
+                    allInputsAreValid = false;
+
+                    // The input is invalid, add the `is-invalid` status class
+                    input.parentElement.classList.add('is-invalid');
+
+                    // Get the error message element
+                    const errorEl = input.parentElement.querySelector('.js-error-message');
+
+                    // Update the message with the validation error message
+                    errorEl.innerHTML = input.validationMessage;
+                }
+            });
+
+            // If the inputs are valid get the address information
+            if(allInputsAreValid){
+
+                const labelInput = <HTMLInputElement>this._addressForm.querySelector('input#label');
+                const fullName = <HTMLInputElement>this._addressForm.querySelector('input#fullName');
+                const addressLine1 = <HTMLInputElement>this._addressForm.querySelector('input#addressLine1');
+                const city = <HTMLInputElement>this._addressForm.querySelector('input#city');
+                const state = <HTMLInputElement>this._addressForm.querySelector('input#state');
+                const zip = <HTMLInputElement>this._addressForm.querySelector('input#zip');
+                const country = <HTMLInputElement>this._addressForm.querySelector('input#country');
+                const phoneNumber = <HTMLInputElement>this._addressForm.querySelector('input#phoneNumber');
+
+                const additionalAddressLines:Array<string> = [];
+                this._additionalAddressLineInputs.forEach((input)=>{
+                    if(input.value !== ''){
+                        additionalAddressLines.push(input.value);
+                    }
+                });
+
+                selectedAddress = {
+                    label: labelInput.value,
+                    fullName: fullName.value,
+                    addressLine1: addressLine1.value,
+                    additionalAddressLines: additionalAddressLines,
+                    city: city.value,
+                    state: state.value,
+                    zip: zip.value,
+                    country: country.value,
+                    phoneNumber: phoneNumber.value
+                }
+            }
+        }
+
+        this.checkout.user.selectedAddress = selectedAddress;
+        this.checkout.next();
+    }
+
+    /**
+     * Called when the `click` event is fired on this sections continue button.
+     */
+    private continueButtonClicked:EventListener = (e:Event)=>{
+        this.validate();
     }
 
     /**
@@ -178,10 +295,10 @@ export class Address{
         newAddressLine.classList.add('o-checkout-input');
 
         // Add the new input
-        newAddressLine.innerHTML = `<input type="text" name="newStreetAddressLine${ this._additionalLine }" id="newStreetAddressLine${ this._additionalLine }">`;
+        newAddressLine.innerHTML = `<input type="text" name="addressLine${ this._additionalLine }" id="addressLine${ this._additionalLine }">`;
 
         // Add the label for the input
-        newAddressLine.innerHTML += `<label for="newStreetAddressLine${ this._additionalLine }">Address Line ${ this._additionalLine }</label>`;
+        newAddressLine.innerHTML += `<label for="addressLine${ this._additionalLine }">Address Line ${ this._additionalLine }</label>`;
 
         // Get the new input
         const newAddressInput = newAddressLine.querySelector('input');
@@ -241,5 +358,10 @@ export class Address{
 
         // Sets the `has-focus` status class
         target.parentElement.classList.add('has-focus');
+
+        // Clear all the `is-selected` status classes from the address cards
+        this._addressCards.forEach((card)=>{
+            card.classList.remove('is-selected');
+        });
     }
 }

@@ -2,9 +2,19 @@
     display: inline-block;
     vertical-align: top;
     width: 100%;
-    max-width: calc(100% - 788px);
-    order: 2;
+    max-width: 376px;
+    position: fixed;
+    top: 96px;
+    right: calc((100vw - 1164px) / 2);
     padding-top: 64px;
+    transform: translateY(0);
+    transition: all 150ms 150ms $ease-in;
+
+    &.is-hidden{
+        opacity: 0;
+        transform: translateY(25px);
+        pointer-events: none;
+    }
 
     .c-checkout_summary_heading{
         display: flex;

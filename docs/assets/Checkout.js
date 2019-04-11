@@ -101,6 +101,7 @@ class Checkout {
         this._loginModal = document.body.querySelector('.js-login-modal');
         this._step = 0;
         this._sections = [];
+        this._summaryEl = document.body.querySelector('.js-summary');
         this.init();
     }
     /**
@@ -112,13 +113,23 @@ class Checkout {
     manageNextStep() {
         // User moved to the address input step
         if (this._step === 1) {
+            // Display the sections
             this.el.classList.remove('is-hidden');
+            // Display the cart summary
+            this._summaryEl.classList.remove('is-hidden');
+            // Hide the login modal
             this._loginModal.classList.add('is-hidden');
+            // Get the shipping address section
             const shippingAddressSection = this.el.querySelector('[data-section="Shipping Address"]');
+            // Make is visible
             shippingAddressSection.classList.add('is-visible');
+            // Start the shipping address logic
             new Address_1.Address(shippingAddressSection, this);
         }
     }
+    /**
+     * Called when the user is ready progress to the next step.
+     */
     next() {
         this._step++;
         this.manageNextStep();
@@ -291,6 +302,12 @@ const libphonenumber_js_1 = __webpack_require__(3);
 class Address {
     constructor(modal, checkout) {
         /**
+         * Called when the `click` event is fired on this sections continue button.
+         */
+        this.continueButtonClicked = (e) => {
+            this.validate();
+        };
+        /**
          * Toggles the selected address card.
          */
         this.toggleAddressCard = (e) => {
@@ -325,9 +342,9 @@ class Address {
             // Apply the checkout input class
             newAddressLine.classList.add('o-checkout-input');
             // Add the new input
-            newAddressLine.innerHTML = `<input type="text" name="newStreetAddressLine${this._additionalLine}" id="newStreetAddressLine${this._additionalLine}">`;
+            newAddressLine.innerHTML = `<input type="text" name="addressLine${this._additionalLine}" id="addressLine${this._additionalLine}">`;
             // Add the label for the input
-            newAddressLine.innerHTML += `<label for="newStreetAddressLine${this._additionalLine}">Address Line ${this._additionalLine}</label>`;
+            newAddressLine.innerHTML += `<label for="addressLine${this._additionalLine}">Address Line ${this._additionalLine}</label>`;
             // Get the new input
             const newAddressInput = newAddressLine.querySelector('input');
             // Add the input event listeners
@@ -376,6 +393,10 @@ class Address {
             const target = e.currentTarget;
             // Sets the `has-focus` status class
             target.parentElement.classList.add('has-focus');
+            // Clear all the `is-selected` status classes from the address cards
+            this._addressCards.forEach((card) => {
+                card.classList.remove('is-selected');
+            });
         };
         this.el = modal;
         this.checkout = checkout;
@@ -387,6 +408,7 @@ class Address {
         this._addressForm = this.el.querySelector('form');
         this._addressFormInputs = Array.from(this.el.querySelectorAll('input'));
         this._additionalAddressLineInputs = [];
+        this._continueButton = this.el.querySelector('.js-continue-button');
         this.init();
     }
     /**
@@ -408,6 +430,7 @@ class Address {
             input.addEventListener('blur', this.handleBlur);
             input.addEventListener('focus', this.handleFocus);
         });
+        this._continueButton.addEventListener('click', this.continueButtonClicked);
     }
     /**
      * Generate address cards from the `addresses` array returned by the successful login.
@@ -418,10 +441,12 @@ class Address {
             const addressModal = this.el.querySelector('.js-modal');
             addressModal.classList.add('has-addresses');
             // If the user has saved addresses loop through them
-            this.checkout.user.addresses.forEach((address) => {
+            for (let i = 0; i < this.checkout.user.addresses.length; i++) {
+                const address = this.checkout.user.addresses[i];
                 // Create a new address card element
                 const newAddressCard = document.createElement('div');
                 newAddressCard.classList.add('o-address-cards_card', 'js-address-card');
+                newAddressCard.dataset.id = `${i}`;
                 // Add the static address SVG
                 newAddressCard.innerHTML += Address.SVG;
                 // Create the unordered list element
@@ -463,8 +488,89 @@ class Address {
                 this._addressCards.push(newAddressCard);
                 // Give the card the toggle click event listener
                 newAddressCard.addEventListener('click', this.toggleAddressCard);
-            });
+            }
+            ;
         }
+    }
+    /**
+     * Called when we need to validate the shipping options.
+     */
+    validate() {
+        let selectedAddress = null;
+        let usingPreviousAddress = false;
+        // Check if the user is logged in
+        if (!this.checkout.user.isGuest) {
+            // Get the selected address card
+            const selectedAddressCard = this.el.querySelector('.js-address-card.is-selected');
+            // Check if a address card is selected
+            if (selectedAddressCard) {
+                // Set the selected address details
+                selectedAddress = this.checkout.user.addresses[parseInt(selectedAddressCard.dataset.id)];
+                usingPreviousAddress = true;
+                this._addressFormInputs.forEach((input) => {
+                    // Remove invalid status class
+                    input.parentElement.classList.remove('is-invalid');
+                    // Check if the inputs value is empty
+                    if (input.value !== '') {
+                        // Value isn't empty, add the `has-value` status class
+                        input.parentElement.classList.add('has-value');
+                    }
+                    else {
+                        // Value is empty, remove the `has-value` status class
+                        input.parentElement.classList.remove('has-value');
+                    }
+                });
+            }
+        }
+        // If we don't have an address try the form
+        if (!usingPreviousAddress) {
+            // Assume the inputs are valid
+            let allInputsAreValid = true;
+            // Loop through all of the new address form inputs
+            this._addressFormInputs.forEach((input) => {
+                // Check if the input is valid
+                if (!input.validity.valid) {
+                    // We found an invalid input
+                    allInputsAreValid = false;
+                    // The input is invalid, add the `is-invalid` status class
+                    input.parentElement.classList.add('is-invalid');
+                    // Get the error message element
+                    const errorEl = input.parentElement.querySelector('.js-error-message');
+                    // Update the message with the validation error message
+                    errorEl.innerHTML = input.validationMessage;
+                }
+            });
+            // If the inputs are valid get the address information
+            if (allInputsAreValid) {
+                const labelInput = this._addressForm.querySelector('input#label');
+                const fullName = this._addressForm.querySelector('input#fullName');
+                const addressLine1 = this._addressForm.querySelector('input#addressLine1');
+                const city = this._addressForm.querySelector('input#city');
+                const state = this._addressForm.querySelector('input#state');
+                const zip = this._addressForm.querySelector('input#zip');
+                const country = this._addressForm.querySelector('input#country');
+                const phoneNumber = this._addressForm.querySelector('input#phoneNumber');
+                const additionalAddressLines = [];
+                this._additionalAddressLineInputs.forEach((input) => {
+                    if (input.value !== '') {
+                        additionalAddressLines.push(input.value);
+                    }
+                });
+                selectedAddress = {
+                    label: labelInput.value,
+                    fullName: fullName.value,
+                    addressLine1: addressLine1.value,
+                    additionalAddressLines: additionalAddressLines,
+                    city: city.value,
+                    state: state.value,
+                    zip: zip.value,
+                    country: country.value,
+                    phoneNumber: phoneNumber.value
+                };
+            }
+        }
+        this.checkout.user.selectedAddress = selectedAddress;
+        this.checkout.next();
     }
 }
 Address.SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="33.5" viewBox="0 0 23.761 33.5"><g class="cls-1" transform="translate(-38.5 -27)"><path id="Path_10" data-name="Path 10" class="cls-2" d="M46.055,76.082C42.482,77.092,40,79.314,40,81.893c0,3.53,4.648,6.39,10.381,6.39s10.381-2.861,10.381-6.39c0-2.647-2.614-4.918-6.34-5.888" transform="translate(0 -29.284)"/><path id="Path_9" data-name="Path 9" class="cls-3" d="M50.381,27A10.272,10.272,0,0,0,40,37.16c0,3.763,1.3,4.939,8.179,15.738a2.627,2.627,0,0,0,4.4,0c6.885-10.8,8.179-11.976,8.179-15.738A10.272,10.272,0,0,0,50.381,27Zm0,24.553C43.491,40.741,42.6,40.059,42.6,37.16a7.787,7.787,0,0,1,15.571,0C58.166,40.046,57.346,40.622,50.381,51.553ZM46.055,37.16a4.326,4.326,0,1,1,4.325,4.233A4.28,4.28,0,0,1,46.055,37.16Z"/></g></svg>';

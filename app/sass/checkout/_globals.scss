@@ -123,10 +123,30 @@
         background-color: $primary;
         box-shadow: 0 1px 4px rgba($primary, 0.3);
 
+        @include hover{
+            background-color: lighten($primary, 3);
+            box-shadow: 0 2px 8px rgba($primary, 0.3);
+        }
+
+        @include active{
+            background-color: darken($primary, 3);
+            box-shadow: 0 2px 8px rgba($primary, 0.3);
+        }
+
         &.-alt{
             background-color: $white;
             color: rgba($primary, 0.87);
             box-shadow: 0 2px 4px rgba($primary, 0.1);
+
+            @include hover{
+                background-color: lighten($white, 3);
+                box-shadow: 0 2px 8px rgba($primary, 0.1);
+            }
+    
+            @include active{
+                background-color: darken($white, 3);
+                box-shadow: 0 2px 8px rgba($primary, 0.1);
+            }
         }
     }
 
@@ -160,6 +180,10 @@
         color: rgba($off-black, 0.15);
         box-shadow: none;
     }
+
+    &.-round{
+        border-radius: 18px;
+    }
 }
 
 .o-checkout-link{
@@ -172,6 +196,11 @@
 
     @include hover{
         color: rgba($primary, 0.87);
+    }
+
+    svg{
+        height: 10px;
+        margin: 0 4px;
     }
 }
 

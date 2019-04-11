@@ -24,3 +24,9 @@ $warning: #FFC82C;
         @content;
     }
 }
+
+@mixin active{
+    &:active{
+        @content;
+    }
+}

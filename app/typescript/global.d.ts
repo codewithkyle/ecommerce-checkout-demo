@@ -9,6 +9,7 @@ interface IUser{
     addresses?: Array<IAddress>;
     cardTokens?: Array<string>;
     paymentOptions?: Array<IPaymentOption>;
+    selectedAddress?: IAddress;
 }
 
 interface ILoginResponse{
@@ -34,7 +35,7 @@ interface IAddress{
     state: string;
     zip: string;
     country: string;
-    phoneNumber: string;
+    phoneNumber: string;    
 }
 
 interface IShippingOptionsResponse{
