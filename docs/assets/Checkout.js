@@ -390,6 +390,12 @@ class Address {
                 addressModal.classList.remove('has-addresses');
                 this.showForm();
             }
+            if (this._revalidate) {
+                if (this._addressCards.length) {
+                    this._addressCards[0].classList.add('is-selected');
+                }
+                this.validate();
+            }
         };
         this.cancelDelete = (e) => {
             this._cardInLimbo = null;
@@ -442,6 +448,12 @@ class Address {
             // If the card was unselected, select it
             if (!isOn) {
                 target.classList.add('is-selected');
+            }
+            else if (this._revalidate) {
+                this.showForm();
+            }
+            if (this._revalidate) {
+                this.validate();
             }
         };
         /**
@@ -504,6 +516,9 @@ class Address {
                 // The input is valid, remove the `is-invalid` status class
                 target.parentElement.classList.remove('is-invalid');
             }
+            if (this._revalidate) {
+                this.validate();
+            }
         };
         /**
          * Called when an inputs `focus` event is fired.
@@ -538,6 +553,7 @@ class Address {
         this._continueButton = this.el.querySelector('.js-continue-button');
         this._cardInLimbo = null;
         this._popupModal = null;
+        this._revalidate = false;
         this.init();
     }
     /**
@@ -638,7 +654,7 @@ class Address {
             }
             ;
             const addAddressCard = document.createElement('div');
-            addAddressCard.classList.add('o-address-cards_new');
+            addAddressCard.classList.add('o-address-cards_new', 'js-new-address-card');
             addAddressCard.innerHTML = '<span>New Address</span>';
             this._addressCardsContainer.appendChild(addAddressCard);
             addAddressCard.addEventListener('click', () => {
@@ -659,6 +675,10 @@ class Address {
      * Add the `is-visible` class to the form wrapper.
      */
     showForm() {
+        const newAddressCard = this.el.querySelector('.js-new-address-card');
+        if (newAddressCard) {
+            newAddressCard.classList.add('is-hidden');
+        }
         this._formWrapper.classList.add('is-visible');
     }
     /**
@@ -773,7 +793,15 @@ class Address {
         // Make sure the selected address object isn't null
         if (selectedAddress !== null) {
             this.checkout.user.selectedAddress = selectedAddress;
-            this.checkout.next();
+            if (!this._revalidate) {
+                this.checkout.next();
+            }
+            else {
+                console.log('Updated users selected address: ', this.checkout.user.selectedAddress);
+            }
+        }
+        if (!this._revalidate) {
+            this._revalidate = true;
         }
     }
 }
