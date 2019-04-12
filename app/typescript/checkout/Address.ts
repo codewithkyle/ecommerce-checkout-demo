@@ -86,13 +86,19 @@ export class Address{
             input.addEventListener('focus', this.handleFocus);
         });
 
+        // Set event listeners for the select elements
         this._addressFormSelects.forEach((select)=>{
             select.addEventListener('blur', this.handleBlur);
             select.addEventListener('focus', this.handleFocus);
         });
 
+        // Listen for the continue button click
         this._continueButton.addEventListener('click', this.continueButtonClicked);
+
+        // Handle the change of the selected country
         this._countrySelect.addEventListener('change', this.updateCountryCode);
+
+        // Listen for keyup for live phone number formatting
         this._phoneNumberInput.addEventListener('keyup', this.liveFormatPhoneNumber);
     }
 

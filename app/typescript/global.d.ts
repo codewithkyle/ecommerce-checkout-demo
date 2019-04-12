@@ -5,11 +5,14 @@ declare class Checkout{
 
 interface IUser{
     email?: string;
+    fullName?: string;
+    password?: string;
     isGuest?: boolean;
     addresses?: Array<IAddress>;
     cardTokens?: Array<string>;
     paymentOptions?: Array<IPaymentOption>;
     selectedAddress?: IAddress;
+    createAccount?: boolean;
 }
 
 interface ILoginResponse{

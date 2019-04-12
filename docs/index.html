@@ -22,7 +22,7 @@
         </div>
     </header>
     <!-- Account Information -->
-    <div class="js-login-modal c-login is-verification">
+    <div class="js-login-modal c-login">
         <h1>Account Login</h1>
         <div class="c-account">
             <form class="js-login-form o-checkout-form">
@@ -42,31 +42,35 @@
                 </div>
             </form>
             <!-- If user is NOT already signed in -->
-            <!-- <div id="split">
+            <div id="split">
                 <span>OR</span>
             </div>
-            <form class="o-checkout-form">
+            <form class="o-checkout-form js-signup-form">
                 <div class="o-checkout-input">
                     <input type="email" name="guestEmailAddress" id="guestEmailAddress" required>
                     <label for="guestEmailAddress">Email Address</label>
+                    <span class="o-checkout-input_message js-error-message"></span>
                 </div>
                 <div class="o-checkout-input">
                     <input type="text" name="guestName" id="guestName" required>
-                    <label for="guestName">Full Name</label> 
+                    <label for="guestName">Full Name</label>
+                    <span class="o-checkout-input_message js-error-message"></span>
                 </div>
                 <div class="o-checkout-input">
-                    <input type="password" name="guestPassword" id="guestPassword">
+                    <input type="password" name="guestPassword" id="guestPassword" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$">
                     <label for="guestPassword">Password</label>
+                    <span class="o-checkout-input_message js-error-message"></span>
                 </div>
                 <div class="o-checkout-input">
                         <input type="password" name="verifyPassword" id="verifyPassword">
                         <label for="verifyPassword">Verify Password</label>
+                        <span class="o-checkout-input_message js-error-message"></span>
                     </div>
                 <div class="o-checkout-form_buttons -right">
-                        <button type="submit" class="o-checkout-button -raised -alt">Guest Checkout</button>
-                    <button type="submit" class="o-checkout-button -raised">Signup</button>
+                    <button type="submit" class="js-guest-checkout-button o-checkout-button -raised -alt">Guest Checkout</button>
+                    <button type="submit" class="js-signup-checkout-button o-checkout-button -raised">Signup</button>
                 </div>
-            </form> -->
+            </form>
         </div>
     </div>
     <!-- Cart Summary -->

@@ -5,6 +5,10 @@ export class Account{
 
     private _inputs: Array<HTMLInputElement>;
     private _loginForm: HTMLFormElement;
+    private _signupForm: HTMLFormElement;
+
+    private _guestCheckout: HTMLButtonElement;
+    private _signupCheckout: HTMLButtonElement;
 
     constructor(modal:HTMLElement, checkout:Checkout){
         this.el = modal;
@@ -12,6 +16,10 @@ export class Account{
 
         this._inputs = Array.from(this.el.querySelectorAll('input'));
         this._loginForm = this.el.querySelector('.js-login-form');
+        this._signupForm = this.el.querySelector('.js-signup-form');
+
+        this._guestCheckout = this.el.querySelector('.js-guest-checkout-button');
+        this._signupCheckout = this.el.querySelector('.js-signup-checkout-button');
 
         this.init();
     }
@@ -31,7 +39,79 @@ export class Account{
 
         // Set the form submit event listener
         this._loginForm.addEventListener('submit', this.loginFormSubmit);
+        this._signupForm.addEventListener('submit', this.signupFormSubmit);
+
+        // Set the click events for the signup form buttons
+        this._guestCheckout.addEventListener('click', this.handleGuestCheckout);
+        this._signupCheckout.addEventListener('click', this.handleSignupCheckout);
     };
+
+    /**
+     * Called when the user is trying to checkout as a guest.
+     */
+    private handleGuestCheckout:EventListener = (e:Event)=>{
+        
+        // The user is trying to checkout as a guest
+        this.checkout.user.createAccount = false;
+        this.checkout.user.isGuest = true;
+
+        const nameInput = <HTMLInputElement>this._signupForm.querySelector('input#guestName');
+        const emailInput = <HTMLInputElement>this._signupForm.querySelector('input#guestEmailAddress');
+
+        if(nameInput.validity.valid && emailInput.validity.valid){
+            this.checkout.user.fullName = nameInput.value;
+            this.checkout.user.email = emailInput.value;
+            this.checkout.next();
+        }
+    }
+
+    /**
+     * Called when the user is trying to checkout with a new account.
+     */
+    private handleSignupCheckout:EventListener = (e:Event)=>{
+        
+        // The user is trying to checkout with a new account
+        this.checkout.user.createAccount = true;
+        this.checkout.user.isGuest = true;
+
+        console.warn('Not verifying the email availability with the server');
+
+        const nameInput = <HTMLInputElement>this._signupForm.querySelector('input#guestName');
+        const emailInput = <HTMLInputElement>this._signupForm.querySelector('input#guestEmailAddress');
+
+        if(nameInput.validity.valid && emailInput.validity.valid){
+            this.checkout.user.fullName = nameInput.value;
+            this.checkout.user.email = emailInput.value;
+
+            const passwordInput = <HTMLInputElement>this._signupForm.querySelector('input#guestPassword');
+            if(passwordInput.validity.valid){
+                const verifyPasswordInput = <HTMLInputElement>this._signupForm.querySelector('input#verifyPassword');
+
+                // Check if the password values match
+                if(passwordInput.value === verifyPasswordInput.value){
+                    this.checkout.user.password = passwordInput.value;
+                    this.checkout.next();
+                }else{
+                    // If invalid add the `is-invalid` status class
+                    verifyPasswordInput.parentElement.classList.add('is-invalid');
+
+                    // Get the error message element
+                    const errorEl = verifyPasswordInput.parentElement.querySelector('.js-error-message');
+
+                    // Add the validation message to the error
+                    errorEl.innerHTML = 'Passwords don\'t match';
+                }
+            }
+        }
+    }
+
+    /**
+     * Called when the `submit` event is fired on the signup form.
+     */
+    private signupFormSubmit:EventListener = (e:Event)=>{
+        // Prevent the default form submission
+        e.preventDefault();
+    }
 
     /**
      * Called when the `submit` event is fired on the login form.
@@ -46,42 +126,17 @@ export class Account{
         
         // Gets the Email and Password inputs
         const email = <HTMLInputElement>this._loginForm.querySelector('#loginEmailAddress');
-        const password = <HTMLInputElement>this._loginForm.querySelector('#loginPassword');
         
-        // If the password is `123` fake a login
-        if(password.value === '123'){
-            (async ()=>{
-                const request = await fetch(`${ window.location.origin }${ window.location.pathname }responses/success.json`);
-                const resonse = await request.text();
-                const user = await JSON.parse(resonse);
-                user.email = email.value;
-                user.isGuest = false;
-                this.checkout.user = user;
-                console.warn('Proceeding with fake user information');
-                this.checkout.next();
-            })();
-        }
-        // If the password is `1234` fake a guest login
-        else if(password.value === '1234'){
-            console.warn('Proceeding with fake guest information');
-            this.checkout.user.email = email.value;
-            this.checkout.user.isGuest = true;
+        (async ()=>{
+            const request = await fetch(`${ window.location.origin }${ window.location.pathname }responses/success.json`);
+            const resonse = await request.text();
+            const user = await JSON.parse(resonse);
+            user.email = email.value;
+            user.isGuest = false;
+            this.checkout.user = user;
+            console.warn('Proceeding with fake user information');
             this.checkout.next();
-        }else{
-            // Builds a fake error response
-            const errorResponse:ILoginResponse ={
-                "success": false,
-                "errors": [
-                    {
-                        "id": "loginPassword",
-                        "message": "Incorrect password"
-                    }
-                ]
-            }
-            
-            // Handle the login errors
-            this.handleLoginErrors(errorResponse);
-        }
+        })();
     }
 
     /**

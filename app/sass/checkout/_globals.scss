@@ -75,6 +75,10 @@
         color: rgba($error, 0.87);
         opacity: 0;
         transition: opacity 150ms $ease;
+        white-space: nowrap;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     input,

@@ -179,6 +179,60 @@ Object.defineProperty(exports, "__esModule", { value: true });
 class Account {
     constructor(modal, checkout) {
         /**
+         * Called when the user is trying to checkout as a guest.
+         */
+        this.handleGuestCheckout = (e) => {
+            // The user is trying to checkout as a guest
+            this.checkout.user.createAccount = false;
+            this.checkout.user.isGuest = true;
+            const nameInput = this._signupForm.querySelector('input#guestName');
+            const emailInput = this._signupForm.querySelector('input#guestEmailAddress');
+            if (nameInput.validity.valid && emailInput.validity.valid) {
+                this.checkout.user.fullName = nameInput.value;
+                this.checkout.user.email = emailInput.value;
+                this.checkout.next();
+            }
+        };
+        /**
+         * Called when the user is trying to checkout with a new account.
+         */
+        this.handleSignupCheckout = (e) => {
+            // The user is trying to checkout with a new account
+            this.checkout.user.createAccount = true;
+            this.checkout.user.isGuest = true;
+            console.warn('Not verifying the email availability with the server');
+            const nameInput = this._signupForm.querySelector('input#guestName');
+            const emailInput = this._signupForm.querySelector('input#guestEmailAddress');
+            if (nameInput.validity.valid && emailInput.validity.valid) {
+                this.checkout.user.fullName = nameInput.value;
+                this.checkout.user.email = emailInput.value;
+                const passwordInput = this._signupForm.querySelector('input#guestPassword');
+                if (passwordInput.validity.valid) {
+                    const verifyPasswordInput = this._signupForm.querySelector('input#verifyPassword');
+                    // Check if the password values match
+                    if (passwordInput.value === verifyPasswordInput.value) {
+                        this.checkout.user.password = passwordInput.value;
+                        this.checkout.next();
+                    }
+                    else {
+                        // If invalid add the `is-invalid` status class
+                        verifyPasswordInput.parentElement.classList.add('is-invalid');
+                        // Get the error message element
+                        const errorEl = verifyPasswordInput.parentElement.querySelector('.js-error-message');
+                        // Add the validation message to the error
+                        errorEl.innerHTML = 'Passwords don\'t match';
+                    }
+                }
+            }
+        };
+        /**
+         * Called when the `submit` event is fired on the signup form.
+         */
+        this.signupFormSubmit = (e) => {
+            // Prevent the default form submission
+            e.preventDefault();
+        };
+        /**
          * Called when the `submit` event is fired on the login form.
          */
         this.loginFormSubmit = (e) => {
@@ -188,41 +242,16 @@ class Account {
             console.warn('Server login verification is not implemented');
             // Gets the Email and Password inputs
             const email = this._loginForm.querySelector('#loginEmailAddress');
-            const password = this._loginForm.querySelector('#loginPassword');
-            // If the password is `123` fake a login
-            if (password.value === '123') {
-                (() => __awaiter(this, void 0, void 0, function* () {
-                    const request = yield fetch(`${window.location.origin}${window.location.pathname}responses/success.json`);
-                    const resonse = yield request.text();
-                    const user = yield JSON.parse(resonse);
-                    user.email = email.value;
-                    user.isGuest = false;
-                    this.checkout.user = user;
-                    console.warn('Proceeding with fake user information');
-                    this.checkout.next();
-                }))();
-            }
-            // If the password is `1234` fake a guest login
-            else if (password.value === '1234') {
-                console.warn('Proceeding with fake guest information');
-                this.checkout.user.email = email.value;
-                this.checkout.user.isGuest = true;
+            (() => __awaiter(this, void 0, void 0, function* () {
+                const request = yield fetch(`${window.location.origin}${window.location.pathname}responses/success.json`);
+                const resonse = yield request.text();
+                const user = yield JSON.parse(resonse);
+                user.email = email.value;
+                user.isGuest = false;
+                this.checkout.user = user;
+                console.warn('Proceeding with fake user information');
                 this.checkout.next();
-            }
-            else {
-                // Builds a fake error response
-                const errorResponse = {
-                    "success": false,
-                    "errors": [
-                        {
-                            "id": "loginPassword",
-                            "message": "Incorrect password"
-                        }
-                    ]
-                };
-                // Handle the login errors
-                this.handleLoginErrors(errorResponse);
-            }
+            }))();
         };
         /**
          * Called when the `blur` event is fired on a input.
@@ -268,6 +297,9 @@ class Account {
         this.checkout = checkout;
         this._inputs = Array.from(this.el.querySelectorAll('input'));
         this._loginForm = this.el.querySelector('.js-login-form');
+        this._signupForm = this.el.querySelector('.js-signup-form');
+        this._guestCheckout = this.el.querySelector('.js-guest-checkout-button');
+        this._signupCheckout = this.el.querySelector('.js-signup-checkout-button');
         this.init();
     }
     /**
@@ -282,6 +314,10 @@ class Account {
         });
         // Set the form submit event listener
         this._loginForm.addEventListener('submit', this.loginFormSubmit);
+        this._signupForm.addEventListener('submit', this.signupFormSubmit);
+        // Set the click events for the signup form buttons
+        this._guestCheckout.addEventListener('click', this.handleGuestCheckout);
+        this._signupCheckout.addEventListener('click', this.handleSignupCheckout);
     }
     ;
     /**
@@ -526,12 +562,16 @@ class Address {
             input.addEventListener('blur', this.handleBlur);
             input.addEventListener('focus', this.handleFocus);
         });
+        // Set event listeners for the select elements
         this._addressFormSelects.forEach((select) => {
             select.addEventListener('blur', this.handleBlur);
             select.addEventListener('focus', this.handleFocus);
         });
+        // Listen for the continue button click
         this._continueButton.addEventListener('click', this.continueButtonClicked);
+        // Handle the change of the selected country
         this._countrySelect.addEventListener('change', this.updateCountryCode);
+        // Listen for keyup for live phone number formatting
         this._phoneNumberInput.addEventListener('keyup', this.liveFormatPhoneNumber);
     }
     /**
